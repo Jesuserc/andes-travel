@@ -22,27 +22,27 @@ public class PaqueteService {
             "Hotel Xima Cusco (4 estrellas)", true, true, "Bus turístico privado + Tren Perurail", "LATAM Airlines"));
 
         guardar(new Paquete(null, "Arequipa & Cañón del Colca", "3 Días / 2 Noches", 850.0, "Tour Colca, Mirador Cruz del Cóndor, City Tour",
-            "https://images.unsplash.com/photo-1589802829985-817e51171b92?q=80&w=800",
+            "https://elcomercio.pe/resizer/v2/HI232NAE45BZ3OK2SF7TP3J42M.jpg?auth=6a5b4a15e0fd7814fcf29e36bf533e48fe219e920959929df6b959c899111192&width=980&height=653&quality=75&smart=true",
             "Visita la Ciudad Blanca, el Monasterio de Santa Catalina y contempla el majestuoso vuelo del cóndor.",
             "Hotel Casa Andina Standard", false, true, "Minivan privada con aire acondicionado", "SKY Airline"));
 
         guardar(new Paquete(null, "Máncora & Playas del Norte", "4 Días / 3 Noches", 1200.0, "Avistamiento de tortugas, Noche de fogata",
-            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800",
+            "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/91/2b/4f/photo0jpg.jpg?w=1000&h=-1&s=1](https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/91/2b/4f/photo0jpg.jpg?w=1000&h=-1&s=1",
             "Disfruta del sol todo el año, relájate frente al mar y vive la mejor gastronomía marina del Perú.",
             "Arennas Máncora Resort", true, true, "Traslado privado Aeropuerto Tumbes/Piura", "LATAM Airlines"));
 
         guardar(new Paquete(null, "Tarapoto & Selva Mágica", "4 Días / 3 Noches", 1150.0, "Laguna Azul, Cataratas de Ahuashiyacu, Castillo de Lamas",
-            "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=800",
+            "https://cumaceba.com/wp-content/uploads/2024/02/optimized_4687-1.jpg",
             "Sumérgete en la Amazonía peruana, navegando en la Laguna Azul y disfrutando de sus paisajes exuberantes.",
             "Tucan Suites Tarapoto", false, true, "Bote a motor y Sprinter privada", "Star Perú"));
 
         guardar(new Paquete(null, "Paracas, Ica & Huacachina", "2 Días / 1 Noche", 490.0, "Islas Ballestas, Tubulares en las dunas, Sandboarding",
-            "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?q=80&w=800",
+            "https://machupicchuviajesperu.com/wp-content/uploads/2025/02/oasis-de-Huacachina-ica-paracas-nazca.webp",
             "Aventura pura en el desierto de Ica, paseo en buggy por las dunas y fauna marina en Paracas.",
             "Hotel San Agustín Paracas", false, true, "Bus Cruz del Sur Ejecutivo", "No requiere vuelo (Terrestre)"));
 
         guardar(new Paquete(null, "Puno, Lago Titicaca & Uros", "3 Días / 2 Noches", 980.0, "Islas Flotantes de los Uros, Isla Taquile con almuerzo",
-            "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=800",
+            "https://www.peru.travel/Contenido/Atractivo/Imagen/es/32/1.1/Principal/isla-flotante-en-el-lago-titicaca-puno-desktop.jpg",
             "Conoce el lago navegable más alto del mundo y comparte la cultura ancestral con sus comunidades.",
             "GHL Hotel Lago Titicaca", false, true, "Lancha rápida panorámica + Bus privado", "LATAM Airlines"));
     }
