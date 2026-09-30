@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paquetes Turísticos - Andes Travel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    body { background-color: #0f1815; color: #f2f4f3; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .text-tagline { color: #d37350; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+    .text-cream { color: #e0d0c1; }
+    
+    .card-dark { background-color: #172420; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; transition: all 0.3s ease; }
+    .card-dark:hover { transform: translateY(-4px); border-color: rgba(211, 115, 80, 0.4); }
+
+    .btn-custom-orange { background-color: #c95d3b; color: #fff; border: none; font-weight: 600; border-radius: 6px; transition: 0.3s; }
+    .btn-custom-orange:hover { background-color: #b04e2e; color: #fff; }
+    
+    .modal-content { background-color: #172420; color: #f2f4f3; border: 1px solid rgba(255,255,255,0.15); }
+    .timeline-item { border-left: 2px solid #c95d3b; padding-left: 15px; margin-bottom: 15px; position: relative; }
+    .timeline-item::before { content: ''; position: absolute; left: -6px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background-color: #c95d3b; }
+  </style>
+</head>
+<body>
+
+  <!-- Menu Navegación -->
+  <div th:replace="~{layout/base :: navbar}"></div>
+
+  <div class="container py-4 py-md-5">
+    
+    <!-- Encabezado Principal -->
+    <div class="text-center mb-4 mb-md-5">
+      <p class="text-tagline mb-1">Experiencias Todo Incluido</p>
+      <h1 class="fw-bold fs-2 fs-md-1" style="font-family: Georgia, serif;">Paquetes Turísticos Exclusivos</h1>
+      <p class="text-secondary mx-auto fs-6" style="max-width: 650px;">
+        Nuestros paquetes están estructurados al detalle: hospedaje en hoteles seleccionados, tickets aéreos/terrestres, traslados privados, desayunos e ingresos guiados a cada atractivo.
+      </p>
+    </div>
+
+    <!-- Barra de Ventajas / Garantías -->
+    <div class="row g-3 mb-4 mb-md-5">
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="p-3 card-dark text-center rounded-3 h-100">
+          <i class="bi bi-shield-check text-warning fs-3 mb-1 d-block"></i>
+          <span class="fw-semibold small d-block text-white">Reserva Flexible</span>
+          <span class="text-secondary style-xs" style="font-size: 0.75rem;">Cambios de fecha sin penalidad</span>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="p-3 card-dark text-center rounded-3 h-100">
+          <i class="bi bi-headset text-warning fs-3 mb-1 d-block"></i>
+          <span class="fw-semibold small d-block text-white">Soporte 24/7</span>
+          <span class="text-secondary style-xs" style="font-size: 0.75rem;">Asistente asignado durante tu viaje</span>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="p-3 card-dark text-center rounded-3 h-100">
+          <i class="bi bi-award text-warning fs-3 mb-1 d-block"></i>
+          <span class="fw-semibold small d-block text-white">Guías Certificados</span>
+          <span class="text-secondary style-xs" style="font-size: 0.75rem;">Expertos nativos en cada región</span>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="p-3 card-dark text-center rounded-3 h-100">
+          <i class="bi bi-credit-card text-warning fs-3 mb-1 d-block"></i>
+          <span class="fw-semibold small d-block text-white">Pagos Seguros</span>
+          <span class="text-secondary style-xs" style="font-size: 0.75rem;">Aceptamos todas las tarjetas y Yape</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de Paquetes -->
+    <div class="row g-4">
+      <div class="col-12" th:each="p : ${paquetes}">
+        <div class="card card-dark overflow-hidden p-3">
+          <div class="row g-0 align-items-center">
+            
+            <!-- Imagen del destino -->
+            <div class="col-12 col-md-4 position-relative">
+              <img th:src="${p.imagenUrl}" class="img-fluid rounded-3 w-100" style="height: 240px; object-fit: cover;" th:alt="${p.nombre}">
+              <span class="position-absolute top-0 start-0 m-2 badge bg-dark bg-opacity-75 text-warning border border-warning" th:text="${p.duracion}">
+                5 Días / 4 Noches
+              </span>
+            </div>
+
+            <!-- Detalles principales -->
+            <div class="col-12 col-md-8 ps-md-4 mt-3 mt-md-0">
+              <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2 mb-2">
+                <div>
+                  <h3 class="h4 fw-bold text-white mb-1" th:text="${p.nombre}">Cusco Imperial</h3>
+                  <p class="small text-cream mb-0"><i class="bi bi-geo-alt text-warning me-1"></i> Destino Top del Perú</p>
+                </div>
+                <div class="text-start text-sm-end">
+                  <span class="small text-secondary d-block">Precio por persona</span>
+                  <span class="fw-bold text-cream fs-3" th:text="'S/ ' + ${#numbers.formatDecimal(p.precio, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</span>
+                </div>
+              </div>
+
+              <p class="small text-secondary mb-3" th:text="${p.descripcion}">Descripción completa del paquete turístico...</p>
+
+              <!-- Módulos Informativos Breves -->
+              <div class="row g-2 mb-3 small text-light bg-dark bg-opacity-50 p-2 rounded border border-secondary border-opacity-25">
+                <div class="col-12 col-sm-6">
+                  <i class="bi bi-building text-warning me-1"></i> <strong>Hotel:</strong> <span class="text-secondary" th:text="${p.hotel}">Hotel</span>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <i class="bi bi-airplane text-warning me-1"></i> <strong>Vuelo / Transporte:</strong> <span class="text-secondary" th:text="${p.aerolinea}">Aerolínea</span>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <i class="bi bi-bus-front text-warning me-1"></i> <strong>Movilidad Local:</strong> <span class="text-secondary" th:text="${p.movilidad}">Movilidad local</span>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <i class="bi bi-egg-fried text-warning me-1"></i> <strong>Régimen:</strong> 
+                  <span class="text-secondary" th:text="${p.todoIncluido ? 'Todo Incluido (Comidas + Bebidas)' : (p.desayuno ? 'Desayunos Buffet Incluidos' : 'Solo Alojamiento')}"></span>
+                </div>
+              </div>
+
+              <!-- Botones de Acción -->
+              <div class="d-flex flex-column flex-sm-row justify-content-between align-items-stretch align-items-sm-center gap-3 pt-2 border-top border-secondary border-opacity-25">
+                <span class="small text-success text-center text-sm-start"><i class="bi bi-check-circle-fill me-1"></i> Cupos disponibles 2026</span>
+                <div class="d-flex flex-column flex-sm-row gap-2">
+                  <button type="button" class="btn btn-outline-light btn-sm px-3 w-100 w-sm-auto" data-bs-toggle="modal" th:data-bs-target="'#modal-paquete-' + ${p.id}">
+                    <i class="bi bi-journal-text me-1"></i> Ver Itinerario Completo
+                  </button>
+                  <a th:href="@{/contacto}" class="btn btn-custom-orange btn-sm px-4 w-100 w-sm-auto text-center">
+                    <i class="bi bi-send me-1"></i> Cotizar Paquete
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Modal de Detalle Completo -->
+        <div class="modal fade" th:id="'modal-paquete-' + ${p.id}" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+              <div class="modal-header border-secondary border-opacity-25">
+                <div>
+                  <h5 class="modal-title fw-bold text-cream mb-0" th:text="${p.nombre}">Detalles del Paquete Turístico</h5>
+                  <span class="small text-secondary" th:text="${'Código de paquete: AT-' + p.id}">AT-001</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              
+              <div class="modal-body">
+                <div class="row g-3 mb-4">
+                  <div class="col-12 col-md-5">
+                    <img th:src="${p.imagenUrl}" class="img-fluid rounded shadow-sm" style="height: 230px; width: 100%; object-fit: cover;" alt="Imagen paquete">
+                    
+                    <div class="mt-3 p-3 rounded bg-dark border border-secondary border-opacity-25">
+                      <h6 class="text-warning fw-bold small mb-2"><i class="bi bi-briefcase me-1"></i> Recomendaciones:</h6>
+                      <ul class="small text-secondary mb-0 ps-3">
+                        <li>Llevar ropa ligera y casaca cortaviento.</li>
+                        <li>Bloqueador solar y zapatillas de trekking.</li>
+                        <li>Documento de identidad / Pasaporte vigente.</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-7">
+                    <h6 class="text-warning fw-bold mb-2"><i class="bi bi-info-circle me-1"></i> Resumen de Servicios</h6>
+                    <p class="small text-secondary mb-3" th:text="${p.descripcion}"></p>
+                    
+                    <ul class="list-unstyled small text-light">
+                      <li class="mb-2"><i class="bi bi-clock-history text-warning me-2"></i><strong>Duración total:</strong> <span th:text="${p.duracion}"></span></li>
+                      <li class="mb-2"><i class="bi bi-building text-warning me-2"></i><strong>Hospedaje confirmado:</strong> <span th:text="${p.hotel}"></span></li>
+                      <li class="mb-2"><i class="bi bi-airplane text-warning me-2"></i><strong>Operador Aéreo / Terrestre:</strong> <span th:text="${p.aerolinea}"></span></li>
+                      <li class="mb-2"><i class="bi bi-truck text-warning me-2"></i><strong>Transporte de Excursión:</strong> <span th:text="${p.movilidad}"></span></li>
+                      <li class="mb-2"><i class="bi bi-shield-exclamation text-warning me-2"></i><strong>Política de cancelación:</strong> Anulación gratuita hasta 7 días antes.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Simulación de Itinerario resumido por días -->
+                <div class="p-3 rounded border border-secondary border-opacity-25 bg-dark mb-3">
+                  <h6 class="text-warning fw-bold mb-3"><i class="bi bi-map me-1"></i> Itinerario Sugerido</h6>
+                  
+                  <div class="timeline-item">
+                    <strong class="text-white small">Día 1: Bienvenida y Recepción</strong>
+                    <p class="text-secondary small mb-0">Llegada al destino, traslado privado al hotel seleccionado y briefing del viaje.</p>
+                  </div>
+                  <div class="timeline-item">
+                    <strong class="text-white small">Día 2: Excursión Principal & Tours Guiados</strong>
+                    <p class="text-secondary small mb-0">Recorrido por los atractivos turísticos más emblemáticos con guía nativo especializado.</p>
+                  </div>
+                  <div class="timeline-item">
+                    <strong class="text-white small">Día Final: Mañana Libre y Retorno</strong>
+                    <p class="text-secondary small mb-0">Tiempo libre para compras de artesanías y traslado de retorno al aeropuerto/terminal.</p>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded border border-secondary border-opacity-25 bg-dark">
+                  <h6 class="text-warning fw-bold mb-2"><i class="bi bi-stars me-1"></i> Todo lo que Incluye tu Tarifa</h6>
+                  <p class="small text-light mb-0" th:text="${p.incluye}">Servicios incluidos...</p>
+                </div>
+              </div>
+
+              <div class="modal-footer border-secondary border-opacity-25 flex-column flex-sm-row">
+                <button type="button" class="btn btn-secondary btn-sm w-100 w-sm-auto mb-2 mb-sm-0" data-bs-dismiss="modal">Cerrar</button>
+                <a th:href="@{/contacto}" class="btn btn-custom-orange btn-sm px-4 w-100 w-sm-auto text-center">Solicitar Cotización</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div th:replace="~{layout/base :: footer}"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -2,12 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Andes Travel | Agencia de Viajes</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <style>
     body { background-color: #0f1815; color: #f2f4f3; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .hero-title { font-family: Georgia, serif; font-size: 3rem; font-weight: bold; line-height: 1.2; }
+    
+    /* Tipografía fluida para el Hero Title en smartphones */
+    .hero-title { 
+      font-family: Georgia, serif; 
+      font-size: clamp(2rem, 5vw + 1rem, 3rem); 
+      font-weight: bold; 
+      line-height: 1.2; 
+    }
     .hero-title em { font-style: italic; color: #e0d0c1; }
     .text-tagline { color: #d37350; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
     
@@ -31,33 +39,33 @@
   <div th:replace="~{layout/base :: navbar}"></div>
 
   <!-- Hero Section -->
-  <section class="py-5 my-2">
-    <div class="container py-4">
+  <section class="py-4 py-md-5 my-2">
+    <div class="container py-2 py-md-4">
       <div class="row align-items-center">
-        <div class="col-lg-8">
-          <p class="text-tagline mb-3">Agencia de viajes peruana</p>
-          <h1 class="hero-title mb-4">El Perú se recorre <em>una vez</em>,<br>se recuerda toda la vida.</h1>
+        <div class="col-12 col-lg-8">
+          <p class="text-tagline mb-2 mb-md-3">Agencia de viajes peruana</p>
+          <h1 class="hero-title mb-3 mb-md-4">El Perú se recorre <em>una vez</em>,<br class="d-none d-sm-inline"> se recuerda toda la vida.</h1>
           <p class="lead mb-4 fs-6" style="max-width: 580px; color: #aeb8b3;">
             Diseñamos rutas por Cusco, Arequipa, Paracas y la Amazonía con guías locales, transporte privado y alojamiento seleccionado a mano. Tú eliges el destino, nosotros armamos el resto.
           </p>
-          <div class="d-flex flex-wrap gap-3 mb-5">
-            <a th:href="@{/destinos}" class="btn btn-custom-orange">Ver destinos</a>
-            <a th:href="@{/contacto}" class="btn btn-custom-outline d-flex align-items-center gap-2">
+          <div class="d-flex flex-column flex-sm-row gap-3 mb-4 mb-md-5">
+            <a th:href="@{/destinos}" class="btn btn-custom-orange text-center">Ver destinos</a>
+            <a th:href="@{/contacto}" class="btn btn-custom-outline d-flex align-items-center justify-content-center gap-2">
               <i class="bi bi-send"></i> Cotizar viaje
             </a>
           </div>
 
           <!-- Estadísticas -->
-          <div class="row g-4 pt-3 border-top border-secondary border-opacity-25">
-            <div class="col-auto me-4">
+          <div class="row g-3 g-sm-4 pt-3 border-top border-secondary border-opacity-25">
+            <div class="col-4 col-sm-auto me-sm-4">
               <div class="stat-number">12</div>
               <div class="stat-label">años de experiencia</div>
             </div>
-            <div class="col-auto me-4">
+            <div class="col-4 col-sm-auto me-sm-4">
               <div class="stat-number">38</div>
               <div class="stat-label">rutas activas</div>
             </div>
-            <div class="col-auto">
+            <div class="col-4 col-sm-auto">
               <div class="stat-number">4.9</div>
               <div class="stat-label">calificación promedio</div>
             </div>
@@ -68,31 +76,31 @@
   </section>
 
   <!-- Sección de Beneficios / ¿Por qué elegirlos? -->
-  <section class="py-5" style="background-color: #131e1a;">
-    <div class="container py-4">
-      <div class="text-center mb-5">
+  <section class="py-4 py-md-5" style="background-color: #131e1a;">
+    <div class="container py-2 py-md-4">
+      <div class="text-center mb-4 mb-md-5">
         <p class="text-tagline mb-2">Servicio Premium</p>
         <h2 class="fw-bold fs-2" style="font-family: Georgia, serif;">¿Por qué viajar con Andes Travel?</h2>
       </div>
-      <div class="row g-4">
-        <div class="col-md-4">
+      <div class="row g-3 g-md-4">
+        <div class="col-12 col-md-4">
           <div class="p-4 rounded-3 h-100 card-dark">
             <i class="bi bi-compass fs-1 text-cream mb-3 d-inline-block"></i>
-            <h4 class="h5 fw-bold text-white mb-2">Guías Locales Expertos</h4>
+            <h3 class="h5 fw-bold text-white mb-2">Guías Locales Expertos</h3>
             <p class="small text-secondary mb-0">Nuestros guías son nativos de cada región, asegurando explicaciones históricas auténticas y vivenciales.</p>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-12 col-md-4">
           <div class="p-4 rounded-3 h-100 card-dark">
             <i class="bi bi-shield-check fs-1 text-cream mb-3 d-inline-block"></i>
-            <h4 class="h5 fw-bold text-white mb-2">Viajes 100% Seguros</h4>
+            <h3 class="h5 fw-bold text-white mb-2">Viajes 100% Seguros</h3>
             <p class="small text-secondary mb-0">Contamos con transporte privado moderno, seguros de viaje integrados y soporte 24/7 en todas tus rutas.</p>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-12 col-md-4">
           <div class="p-4 rounded-3 h-100 card-dark">
             <i class="bi bi-sliders fs-1 text-cream mb-3 d-inline-block"></i>
-            <h4 class="h5 fw-bold text-white mb-2">Itinerarios a Medida</h4>
+            <h3 class="h5 fw-bold text-white mb-2">Itinerarios a Medida</h3>
             <p class="small text-secondary mb-0">Personalizamos cada detalle del paquete según tu ritmo, presupuesto y preferencias de aventura o relax.</p>
           </div>
         </div>
@@ -101,60 +109,60 @@
   </section>
 
   <!-- Sección de Destinos Populares -->
-  <section class="py-5">
-    <div class="container py-4">
-      <div class="d-flex justify-content-between align-items-end mb-4">
+  <section class="py-4 py-md-5">
+    <div class="container py-2 py-md-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
         <div>
           <p class="text-tagline mb-1">Explora lo mejor</p>
           <h2 class="fw-bold fs-2" style="font-family: Georgia, serif;">Destinos más populares</h2>
         </div>
-        <a th:href="@{/destinos}" class="btn btn-outline-light btn-sm px-3 d-none d-md-inline-block">Ver todos los paquetes →</a>
+        <a th:href="@{/destinos}" class="btn btn-outline-light btn-sm px-3 align-self-start align-self-md-auto">Ver todos los paquetes →</a>
       </div>
 
-      <div class="row g-4">
+      <div class="row g-3 g-md-4">
         <!-- Cusco -->
-        <div class="col-md-4">
+        <div class="col-12 col-sm-6 col-lg-4">
           <div class="card card-dark overflow-hidden h-100">
             <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=600" class="card-img-top" style="height: 220px; object-fit: cover;" alt="Cusco">
-            <div class="card-body p-4 d-flex flex-column">
+            <div class="card-body p-3 p-sm-4 d-flex flex-column">
               <span class="badge bg-secondary mb-2 w-auto me-auto align-self-start">5 Días / 4 Noches</span>
               <h3 class="h5 fw-bold text-white">Cusco & Machu Picchu</h3>
               <p class="small text-secondary flex-grow-1">Valle Sagrado, Ollantaytambo y la mítica ciudadela inca con boletos de tren e ingresos incluidos.</p>
               <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary border-opacity-25">
                 <span class="fw-bold text-cream fs-5">S/ 1,890</span>
-                <a th:href="@{/contacto}" class="btn btn-custom-orange btn-sm">Reservar</a>
+                <a th:href="@{/contacto}" class="btn btn-custom-orange btn-sm px-3">Reservar</a>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Arequipa -->
-        <div class="col-md-4">
+        <div class="col-12 col-sm-6 col-lg-4">
           <div class="card card-dark overflow-hidden h-100">
             <img src="https://images.unsplash.com/photo-1589802829985-817e51171b92?q=80&w=600" class="card-img-top" style="height: 220px; object-fit: cover;" alt="Arequipa">
-            <div class="card-body p-4 d-flex flex-column">
+            <div class="card-body p-3 p-sm-4 d-flex flex-column">
               <span class="badge bg-secondary mb-2 w-auto me-auto align-self-start">3 Días / 2 Noches</span>
               <h3 class="h5 fw-bold text-white">Arequipa y Cañón del Colca</h3>
               <p class="small text-secondary flex-grow-1">Recorre la Ciudad Blanca y avista el vuelo majestuoso del cóndor en el impresionante Colca.</p>
               <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary border-opacity-25">
                 <span class="fw-bold text-cream fs-5">S/ 850</span>
-                <a th:href="@{/contacto}" class="btn btn-custom-orange btn-sm">Reservar</a>
+                <a th:href="@{/contacto}" class="btn btn-custom-orange btn-sm px-3">Reservar</a>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Máncora -->
-        <div class="col-md-4">
+        <div class="col-12 col-sm-6 col-lg-4">
           <div class="card card-dark overflow-hidden h-100">
             <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=600" class="card-img-top" style="height: 220px; object-fit: cover;" alt="Máncora">
-            <div class="card-body p-4 d-flex flex-column">
+            <div class="card-body p-3 p-sm-4 d-flex flex-column">
               <span class="badge bg-secondary mb-2 w-auto me-auto align-self-start">4 Días / 3 Noches</span>
               <h3 class="h5 fw-bold text-white">Máncora & Playas del Norte</h3>
               <p class="small text-secondary flex-grow-1">Relax, sol garantizado todo el año, avistamiento de ballenas y la mejor gastronomía marina.</p>
               <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary border-opacity-25">
                 <span class="fw-bold text-cream fs-5">S/ 1,200</span>
-                <a th:href="@{/contacto}" class="btn btn-custom-orange btn-sm">Reservar</a>
+                <a th:href="@{/contacto}" class="btn btn-custom-orange btn-sm px-3">Reservar</a>
               </div>
             </div>
           </div>
@@ -164,29 +172,29 @@
   </section>
 
   <!-- Sección de Testimonios -->
-  <section class="py-5" style="background-color: #131e1a;">
-    <div class="container py-4">
-      <div class="text-center mb-5">
+  <section class="py-4 py-md-5" style="background-color: #131e1a;">
+    <div class="container py-2 py-md-4">
+      <div class="text-center mb-4 mb-md-5">
         <p class="text-tagline mb-2">Opiniones</p>
         <h2 class="fw-bold fs-2" style="font-family: Georgia, serif;">Lo que dicen nuestros viajeros</h2>
       </div>
-      <div class="row g-4">
-        <div class="col-md-6">
-          <div class="p-4 rounded-3 card-dark">
+      <div class="row g-3 g-md-4">
+        <div class="col-12 col-md-6">
+          <div class="p-3 p-sm-4 rounded-3 card-dark h-100">
             <div class="text-warning mb-2">
               <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
             </div>
-            <p class="fst-italic text-secondary">"La organización del viaje a Cusco fue impecable. Los hoteles súper cómodos y el guía local de Machu Picchu resolvió todas nuestras dudas."</p>
+            <p class="fst-italic text-secondary small mb-3">"La organización del viaje a Cusco fue impecable. Los hoteles súper cómodos y el guía local de Machu Picchu resolvió todas nuestras dudas."</p>
             <div class="fw-bold text-white mb-0">— Camila R.</div>
             <span class="small text-muted">Viajó en pareja · Agosto 2026</span>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="p-4 rounded-3 card-dark">
+        <div class="col-12 col-md-6">
+          <div class="p-3 p-sm-4 rounded-3 card-dark h-100">
             <div class="text-warning mb-2">
               <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
             </div>
-            <p class="fst-italic text-secondary">"Súper recomendados. Cotizamos todo desde la web y nos atendieron rapidísimo por mensaje. ¡Repetiremos la experiencia pronto!"</p>
+            <p class="fst-italic text-secondary small mb-3">"Súper recomendados. Cotizamos todo desde la web y nos atendieron rapidísimo por mensaje. ¡Repetiremos la experiencia pronto!"</p>
             <div class="fw-bold text-white mb-0">— Mateo S.</div>
             <span class="small text-muted">Viaje familiar · Julio 2026</span>
           </div>
@@ -196,16 +204,17 @@
   </section>
 
   <!-- Banner de Cotización final -->
-  <section class="py-5 text-center">
-    <div class="container py-4">
+  <section class="py-4 py-md-5 text-center">
+    <div class="container py-2 py-md-4">
       <h2 class="fw-bold fs-2 mb-3" style="font-family: Georgia, serif;">¿Listo para tu próxima aventura?</h2>
       <p class="text-secondary mb-4 mx-auto" style="max-width: 500px;">Contáctanos hoy mismo y te armamos un presupuesto personalizado sin ningún compromiso.</p>
-      <a th:href="@{/contacto}" class="btn btn-custom-orange px-5 py-3 fw-bold fs-6">Cotizar mi viaje ahora</a>
+      <a th:href="@{/contacto}" class="btn btn-custom-orange w-100 w-sm-auto px-5 py-3 fw-bold fs-6">Cotizar mi viaje ahora</a>
     </div>
   </section>
 
   <!-- Footer -->
   <div th:replace="~{layout/base :: footer}"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
