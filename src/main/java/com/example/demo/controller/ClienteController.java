@@ -16,7 +16,9 @@ public class ClienteController {
     private final ReservaService reservaService;
     private final ClienteService clienteService;
 
-    public ClienteController(PaqueteService paqueteService, ReservaService reservaService, ClienteService clienteService) {
+    public ClienteController(PaqueteService paqueteService, 
+        ReservaService reservaService, 
+        ClienteService clienteService) {
         this.paqueteService = paqueteService;
         this.reservaService = reservaService;
         this.clienteService = clienteService;
@@ -48,11 +50,10 @@ public class ClienteController {
     }
 
     // Post/Redirect/Get: evita reenvío del formulario al recargar y recarga la lista de paquetes
-    @PostMapping("/reservar")
-    public String registrarReserva(@ModelAttribute Reserva reserva, RedirectAttributes ra) {
-        reservaService.guardarReserva(reserva);
-        clienteService.registrarSiNoExiste(reserva.getNombreCliente(), reserva.getCorreoCliente());
-        ra.addFlashAttribute("mensaje", "¡Gracias! Tu cotización ha sido enviada con éxito.");
-        return "redirect:/contacto";
-    }
+@PostMapping("/reservar")
+public String guardarReserva(@ModelAttribute("reserva") Reserva reserva, RedirectAttributes redirectAttributes) {
+    reservaService.guardar(reserva);
+    redirectAttributes.addFlashAttribute("mensaje", "¡Reserva realizada con éxito!");
+    return "redirect:/confirmacion";
+}
 }

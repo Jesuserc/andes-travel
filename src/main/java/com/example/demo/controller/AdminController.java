@@ -22,7 +22,9 @@ public class AdminController {
     private final ReservaService reservaService;
     private final ClienteService clienteService;
 
-    public AdminController(PaqueteService paqueteService, ReservaService reservaService, ClienteService clienteService) {
+    public AdminController(PaqueteService paqueteService, 
+                           ReservaService reservaService, 
+                           ClienteService clienteService) {
         this.paqueteService = paqueteService;
         this.reservaService = reservaService;
         this.clienteService = clienteService;
@@ -61,7 +63,7 @@ public class AdminController {
     @GetMapping("/admin/paquetes/editar/{id}")
     public String editarPaquete(@PathVariable Long id, Model model) {
         model.addAttribute("paquetes", paqueteService.listarTodos());
-        model.addAttribute("paquete", paqueteService.buscarPorId(id).orElse(new Paquete()));
+        model.addAttribute("paquete", paqueteService.obtenerPorId(id).orElse(new Paquete()));
         model.addAttribute("editando", true);
         return "admin/dashboard";
     }
@@ -84,7 +86,7 @@ public class AdminController {
     // ---------- Reservas ----------
     @GetMapping("/admin/reservas")
     public String verReservas(@RequestParam(required = false) String q, Model model) {
-        model.addAttribute("reservas", reservaService.buscar(q));
+        model.addAttribute("reservas", reservaService.listarTodas());
         model.addAttribute("paquetes", paqueteService.listarTodos());
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("q", q);
@@ -93,8 +95,7 @@ public class AdminController {
 
     @PostMapping("/admin/reservas/guardar")
     public String guardarReserva(@ModelAttribute Reserva reserva, RedirectAttributes ra) {
-        reservaService.guardarReserva(reserva);
-        clienteService.registrarSiNoExiste(reserva.getNombreCliente(), reserva.getCorreoCliente());
+        reservaService.guardar(reserva);
         ra.addFlashAttribute("ok", "Reserva registrada correctamente.");
         return "redirect:/admin/reservas";
     }
@@ -109,7 +110,7 @@ public class AdminController {
     // ---------- Clientes ----------
     @GetMapping("/admin/clientes")
     public String verClientes(@RequestParam(required = false) String q, Model model) {
-        model.addAttribute("clientes", clienteService.buscar(q));
+        model.addAttribute("clientes", clienteService.listarTodos());
         model.addAttribute("cliente", new Cliente());
         model.addAttribute("q", q);
         return "admin/clientes";
@@ -130,32 +131,16 @@ public class AdminController {
     }
 
     // ---------- Gráficos (2 páginas) ----------
-    // Antes /admin/reportes apuntaba a una plantilla inexistente (error 500). Se mantiene la ruta y redirige.
     @GetMapping("/admin/reportes")
     public String reportes() { return "redirect:/admin/graficos/paquetes"; }
 
     @GetMapping("/admin/graficos/paquetes")
     public String graficosPaquetes(Model model) {
-        Map<String, Double> precios = paqueteService.precioPorPaquete();
-        Map<String, Long> aerolineas = paqueteService.cantidadPorAerolinea();
-        model.addAttribute("preciosLabels", new ArrayList<>(precios.keySet()));
-        model.addAttribute("preciosValues", new ArrayList<>(precios.values()));
-        model.addAttribute("aeroLabels", new ArrayList<>(aerolineas.keySet()));
-        model.addAttribute("aeroValues", new ArrayList<>(aerolineas.values()));
         return "admin/graficos-paquetes";
     }
 
     @GetMapping("/admin/graficos/reservas")
     public String graficosReservas(Model model) {
-        Map<String, Long> porFecha = reservaService.reservasPorFecha();
-        Map<String, Long> porPaquete = reservaService.reservasPorPaquete();
-        Map<String, Integer> viajeros = reservaService.viajerosPorPaquete();
-        model.addAttribute("fechaLabels", new ArrayList<>(porFecha.keySet()));
-        model.addAttribute("fechaValues", new ArrayList<>(porFecha.values()));
-        model.addAttribute("paqLabels", new ArrayList<>(porPaquete.keySet()));
-        model.addAttribute("paqValues", new ArrayList<>(porPaquete.values()));
-        model.addAttribute("viajLabels", new ArrayList<>(viajeros.keySet()));
-        model.addAttribute("viajValues", new ArrayList<>(viajeros.values()));
         return "admin/graficos-reservas";
     }
 }

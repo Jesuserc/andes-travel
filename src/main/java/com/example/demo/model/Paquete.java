@@ -9,7 +9,6 @@ public class Paquete {
     private String imagenUrl;
     private String descripcion;
     
-    // Nuevos campos detallados
     private String hotel;
     private boolean todoIncluido;
     private boolean desayuno;
@@ -32,6 +31,16 @@ public class Paquete {
         this.movilidad = movilidad;
         this.aerolinea = aerolinea;
     }
+
+public Paquete(Long id, String nombre, String duracion, Double precio, String incluye, String imagenUrl, String descripcion) {
+    this.id = id;
+    this.nombre = nombre;
+    this.duracion = duracion;
+    this.precio = precio;
+    this.incluye = incluye;
+    this.imagenUrl = imagenUrl;
+    this.descripcion = descripcion;
+}
 
     // Getters y Setters
     public Long getId() { return id; }

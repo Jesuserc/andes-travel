@@ -14,7 +14,7 @@ public class Reserva {
     // Constructor vacío
     public Reserva() {}
 
-    // Constructor con 6 parámetros (sin fecha inicial)
+    // Constructor con parámetros 
     public Reserva(Long id, String nombreCliente, String correoCliente, String nombrePaquete, int numeroViajeros, String mensaje) {
         this.id = id;
         this.nombreCliente = nombreCliente;
