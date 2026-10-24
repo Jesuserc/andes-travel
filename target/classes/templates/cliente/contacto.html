@@ -26,6 +26,13 @@
   <div th:replace="~{layout/base :: navbar}"></div>
 
   <div class="container py-4 py-md-5">
+    
+    <!-- Alerta de éxito -->
+    <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+      <i class="bi bi-check-circle-fill me-2"></i> <span th:text="${mensaje}"></span>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+    </div>
+
     <div class="row g-4">
       
       <!-- Lado Izquierdo: Canales de Atención -->
@@ -114,9 +121,12 @@
               <label class="form-label small text-secondary">Destino / Paquete de Interés *</label>
               <div class="input-group">
                 <span class="input-group-text input-group-text-dark"><i class="bi bi-map"></i></span>
-                <select th:field="*{paqueteSeleccionado}" class="form-select form-select-dark" required>
-                  <option value="">Selecciona un destino...</option>
-                  <option th:each="p : ${paquetes}" th:value="${p.nombre}" th:text="${p.nombre}"></option>
+                <select id="selectPaquete" th:field="*{paqueteSeleccionado}" class="form-select form-select-dark" required>
+                  <option value="" data-precio="0">Selecciona un destino...</option>
+                  <option th:each="p : ${paquetes}" 
+                          th:value="${p.nombre}" 
+                          th:data-precio="${p.precio}" 
+                          th:text="${p.nombre + ' (S/ ' + p.precio + ')'}"></option>
                 </select>
               </div>
             </div>
@@ -125,20 +135,20 @@
               <label class="form-label small text-secondary">N° Viajeros *</label>
               <div class="input-group">
                 <span class="input-group-text input-group-text-dark"><i class="bi bi-people"></i></span>
-                <input type="number" min="1" th:field="*{cantidadPersonas}" class="form-control form-control-dark" value="1" required>
+                <input type="number" id="inputViajeros" min="1" th:field="*{cantidadPersonas}" class="form-control form-control-dark" value="1" required>
               </div>
             </div>
 
             <div class="col-12">
               <div class="p-3 rounded bg-dark border border-secondary border-opacity-25 d-flex justify-content-between align-items-center">
                 <span class="small text-secondary">Presupuesto estimado aproximado:</span>
-                <span class="fw-bold text-cream fs-5">S/ 0.00</span>
+                <span id="presupuestoTexto" class="fw-bold text-cream fs-5">S/ 0.00</span>
               </div>
             </div>
 
             <div class="col-12">
-              <label class="form-label small text-secondary">Mensaje / Requerimientos Especiales</label>
-              <textarea th:field="*{telefonoCliente}" class="form-control form-control-dark" rows="3" placeholder="Indícanos teléfono de contacto, fechas probables de viaje o requerimientos de hotel..."></textarea>
+              <label class="form-label small text-secondary">Teléfono de Contacto / Comentarios</label>
+              <textarea th:field="*{telefonoCliente}" class="form-control form-control-dark" rows="3" placeholder="Indícanos teléfono de contacto o requerimientos de hotel..."></textarea>
             </div>
 
             <div class="col-12 pt-2">
@@ -157,5 +167,26 @@
   <div th:replace="~{layout/base :: footer}"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script para cálculo dinámico del presupuesto -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const selectPaquete = document.getElementById('selectPaquete');
+      const inputViajeros = document.getElementById('inputViajeros');
+      const presupuestoTexto = document.getElementById('presupuestoTexto');
+
+      function calcularPresupuesto() {
+        const optionSeleccionada = selectPaquete.options[selectPaquete.selectedIndex];
+        const precioUnitario = parseFloat(optionSeleccionada.getAttribute('data-precio')) || 0;
+        const cantidad = parseInt(inputViajeros.value) || 0;
+        const total = precioUnitario * cantidad;
+
+        presupuestoTexto.textContent = 'S/ ' + total.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      selectPaquete.addEventListener('change', calcularPresupuesto);
+      inputViajeros.addEventListener('input', calcularPresupuesto);
+    });
+  </script>
 </body>
 </html>
