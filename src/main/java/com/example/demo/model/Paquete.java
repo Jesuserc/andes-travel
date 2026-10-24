@@ -1,23 +1,37 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "paquetes")
 public class Paquete {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String nombre;
+
     private String duracion;
-    private double precio;
+    private Double precio;
     private String incluye;
+
+    @Column(length = 1000)
     private String imagenUrl;
+
+    @Column(length = 1000)
     private String descripcion;
-    
-    private String hotel;
-    private boolean todoIncluido;
-    private boolean desayuno;
-    private String movilidad;
-    private String aerolinea;
+
+    private String destino;
+    private boolean activo = true;
+    private boolean destacado = false;
+    private String categoria;
+    private String duracionDias;
 
     public Paquete() {}
 
-    public Paquete(Long id, String nombre, String duracion, double precio, String incluye, String imagenUrl, String descripcion, String hotel, boolean todoIncluido, boolean desayuno, String movilidad, String aerolinea) {
+    public Paquete(Long id, String nombre, String duracion, Double precio, String incluye, String imagenUrl, String descripcion) {
         this.id = id;
         this.nombre = nombre;
         this.duracion = duracion;
@@ -25,24 +39,8 @@ public class Paquete {
         this.incluye = incluye;
         this.imagenUrl = imagenUrl;
         this.descripcion = descripcion;
-        this.hotel = hotel;
-        this.todoIncluido = todoIncluido;
-        this.desayuno = desayuno;
-        this.movilidad = movilidad;
-        this.aerolinea = aerolinea;
     }
 
-public Paquete(Long id, String nombre, String duracion, Double precio, String incluye, String imagenUrl, String descripcion) {
-    this.id = id;
-    this.nombre = nombre;
-    this.duracion = duracion;
-    this.precio = precio;
-    this.incluye = incluye;
-    this.imagenUrl = imagenUrl;
-    this.descripcion = descripcion;
-}
-
-    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -52,8 +50,8 @@ public Paquete(Long id, String nombre, String duracion, Double precio, String in
     public String getDuracion() { return duracion; }
     public void setDuracion(String duracion) { this.duracion = duracion; }
 
-    public double getPrecio() { return precio; }
-    public void setPrecio(double precio) { this.precio = precio; }
+    public Double getPrecio() { return precio; }
+    public void setPrecio(Double precio) { this.precio = precio; }
 
     public String getIncluye() { return incluye; }
     public void setIncluye(String incluye) { this.incluye = incluye; }
@@ -64,18 +62,18 @@ public Paquete(Long id, String nombre, String duracion, Double precio, String in
     public String getDescripcion() { return descripcion; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
 
-    public String getHotel() { return hotel; }
-    public void setHotel(String hotel) { this.hotel = hotel; }
+    public String getDestino() { return destino; }
+    public void setDestino(String destino) { this.destino = destino; }
 
-    public boolean isTodoIncluido() { return todoIncluido; }
-    public void setTodoIncluido(boolean todoIncluido) { this.todoIncluido = todoIncluido; }
+    public boolean isActivo() { return activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
 
-    public boolean isDesayuno() { return desayuno; }
-    public void setDesayuno(boolean desayuno) { this.desayuno = desayuno; }
+    public boolean isDestacado() { return destacado; }
+    public void setDestacado(boolean destacado) { this.destacado = destacado; }
 
-    public String getMovilidad() { return movilidad; }
-    public void setMovilidad(String movilidad) { this.movilidad = movilidad; }
+    public String getCategoria() { return categoria; }
+    public void setCategoria(String categoria) { this.categoria = categoria; }
 
-    public String getAerolinea() { return aerolinea; }
-    public void setAerolinea(String aerolinea) { this.aerolinea = aerolinea; }
+    public String getDuracionDias() { return duracionDias; }
+    public void setDuracionDias(String duracionDias) { this.duracionDias = duracionDias; }
 }
