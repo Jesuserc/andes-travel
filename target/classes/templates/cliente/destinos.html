@@ -40,8 +40,8 @@
             <p class="small text-secondary flex-grow-1" th:text="${p.descripcion}">Descripción...</p>
             
             <div class="d-flex flex-wrap gap-2 mb-3">
-              <span th:if="${p.todoIncluido}" class="badge bg-success"><i class="bi bi-check-circle"></i> Todo Incluido</span>
-              <span th:if="${p.desayuno}" class="badge bg-info text-dark"><i class="bi bi-cup-hot"></i> Desayunos</span>
+              <span th:if="${p.destacado}" class="badge bg-warning text-dark"><i class="bi bi-star-fill"></i> Destacado</span>
+              <span th:if="${p.categoria != null}" class="badge bg-info text-dark" th:text="${p.categoria}">Categoría</span>
             </div>
 
             <div class="d-flex flex-column flex-xs-row justify-content-between align-items-sm-center gap-2 pt-3 border-top border-secondary border-opacity-25">
@@ -69,21 +69,14 @@
                 <p class="small text-secondary mb-3" th:text="${p.descripcion}"></p>
                 
                 <ul class="list-group list-group-flush bg-transparent">
-                  <li class="list-group-item bg-transparent text-white border-secondary border-opacity-25 px-0">
-                    <i class="bi bi-building text-warning me-2"></i> <strong>Alojamiento:</strong> <span th:text="${p.hotel}">Hotel</span>
+                  <li class="list-group-item bg-transparent text-white border-secondary border-opacity-25 px-0" th:if="${p.destino != null}">
+                    <i class="bi bi-geo-alt text-warning me-2"></i> <strong>Destino Principal:</strong> <span th:text="${p.destino}">Ciudad</span>
+                  </li>
+                  <li class="list-group-item bg-transparent text-white border-secondary border-opacity-25 px-0" th:if="${p.duracionDias != null}">
+                    <i class="bi bi-clock text-warning me-2"></i> <strong>Duración Estimada:</strong> <span th:text="${p.duracionDias}">Días</span>
                   </li>
                   <li class="list-group-item bg-transparent text-white border-secondary border-opacity-25 px-0">
-                    <i class="bi bi-airplane text-warning me-2"></i> <strong>Aerolínea / Transporte:</strong> <span th:text="${p.aerolinea}">Aerolínea</span>
-                  </li>
-                  <li class="list-group-item bg-transparent text-white border-secondary border-opacity-25 px-0">
-                    <i class="bi bi-bus-front text-warning me-2"></i> <strong>Movilidad Local:</strong> <span th:text="${p.movilidad}">Movilidad</span>
-                  </li>
-                  <li class="list-group-item bg-transparent text-white border-secondary border-opacity-25 px-0">
-                    <i class="bi bi-egg-fried text-warning me-2"></i> <strong>Régimen:</strong> 
-                    <span th:text="${p.todoIncluido ? 'Todo Incluido (Comidas + Bebidas)' : (p.desayuno ? 'Incluye Desayunos Buffet' : 'Solo Alojamiento')}"></span>
-                  </li>
-                  <li class="list-group-item bg-transparent text-white border-secondary border-opacity-25 px-0">
-                    <i class="bi bi-check2-square text-warning me-2"></i> <strong>Incluye:</strong> <span th:text="${p.incluye}">Tours</span>
+                    <i class="bi bi-check2-square text-warning me-2"></i> <strong>Incluye:</strong> <span th:text="${p.incluye}">Servicios incluidos</span>
                   </li>
                 </ul>
               </div>
