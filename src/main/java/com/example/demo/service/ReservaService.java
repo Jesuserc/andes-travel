@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Reserva;
+import com.example.demo.repository.PaqueteRepository;
 import com.example.demo.repository.ReservaRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,11 @@ import java.util.Optional;
 public class ReservaService {
 
     private final ReservaRepository reservaRepository;
+    private final PaqueteRepository paqueteRepository;
 
-    public ReservaService(ReservaRepository reservaRepository) {
+    public ReservaService(ReservaRepository reservaRepository, PaqueteRepository paqueteRepository) {
         this.reservaRepository = reservaRepository;
+        this.paqueteRepository = paqueteRepository;
     }
 
     public List<Reserva> listarTodas() {
@@ -25,6 +28,17 @@ public class ReservaService {
     }
 
     public Reserva guardar(Reserva reserva) {
+        if (reserva.getEstado() == null) {
+            reserva.setEstado("PENDIENTE");
+        }
+        
+        if (reserva.getTotal() == null || reserva.getTotal() == 0) {
+            paqueteRepository.findAll().stream()
+                .filter(p -> p.getNombre().equalsIgnoreCase(reserva.getPaqueteSeleccionado()))
+                .findFirst()
+                .ifPresent(p -> reserva.setTotal(p.getPrecio() * reserva.getCantidadPersonas()));
+        }
+        
         return reservaRepository.save(reserva);
     }
 
