@@ -38,6 +38,10 @@ public class ClienteController {
         model.addAttribute("paquetes", paqueteService.listarTodos());
         return "cliente/paquetes";
     }
+@GetMapping("/confirmacion")
+public String confirmacion() {
+    return "cliente/confirmacion";
+}
 
     @GetMapping("/nosotros")
     public String nosotros() { return "cliente/nosotros"; }
@@ -49,11 +53,9 @@ public class ClienteController {
         return "cliente/contacto";
     }
 
-    // Post/Redirect/Get: evita reenvío del formulario al recargar y recarga la lista de paquetes
 @PostMapping("/reservar")
 public String guardarReserva(@ModelAttribute("reserva") Reserva reserva, RedirectAttributes redirectAttributes) {
     reservaService.guardar(reserva);
-    redirectAttributes.addFlashAttribute("mensaje", "¡Reserva realizada con éxito!");
     return "redirect:/confirmacion";
 }
 }
