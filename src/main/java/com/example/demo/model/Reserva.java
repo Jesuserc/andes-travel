@@ -1,39 +1,28 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "reservas")
 public class Reserva {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nombreCliente;
     private String correoCliente;
-    private String nombrePaquete;
-    private int numeroViajeros;
-    private String mensaje;
-    private LocalDate fecha;
+    private String telefonoCliente;
+    private String paqueteSeleccionado;
+    private Integer cantidadPersonas;
+    private LocalDate fechaViaje;
+    private Double total;
+    private String estado = "PENDIENTE";
 
-    // Constructor vacío
     public Reserva() {}
 
-    // Constructor con parámetros 
-    public Reserva(Long id, String nombreCliente, String correoCliente, String nombrePaquete, int numeroViajeros, String mensaje) {
-        this.id = id;
-        this.nombreCliente = nombreCliente;
-        this.correoCliente = correoCliente;
-        this.nombrePaquete = nombrePaquete;
-        this.numeroViajeros = numeroViajeros;
-        this.mensaje = mensaje;
-    }
-
-    public Reserva(Long id, String nombreCliente, String correoCliente, String nombrePaquete, int numeroViajeros, String mensaje, LocalDate fecha) {
-        this.id = id;
-        this.nombreCliente = nombreCliente;
-        this.correoCliente = correoCliente;
-        this.nombrePaquete = nombrePaquete;
-        this.numeroViajeros = numeroViajeros;
-        this.mensaje = mensaje;
-        this.fecha = fecha;
-    }
-
+    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -43,15 +32,21 @@ public class Reserva {
     public String getCorreoCliente() { return correoCliente; }
     public void setCorreoCliente(String correoCliente) { this.correoCliente = correoCliente; }
 
-    public String getNombrePaquete() { return nombrePaquete; }
-    public void setNombrePaquete(String nombrePaquete) { this.nombrePaquete = nombrePaquete; }
+    public String getTelefonoCliente() { return telefonoCliente; }
+    public void setTelefonoCliente(String telefonoCliente) { this.telefonoCliente = telefonoCliente; }
 
-    public int getNumeroViajeros() { return numeroViajeros; }
-    public void setNumeroViajeros(int numeroViajeros) { this.numeroViajeros = numeroViajeros; }
+    public String getPaqueteSeleccionado() { return paqueteSeleccionado; }
+    public void setPaqueteSeleccionado(String paqueteSeleccionado) { this.paqueteSeleccionado = paqueteSeleccionado; }
 
-    public String getMensaje() { return mensaje; }
-    public void setMensaje(String mensaje) { this.mensaje = mensaje; }
+    public Integer getCantidadPersonas() { return cantidadPersonas; }
+    public void setCantidadPersonas(Integer cantidadPersonas) { this.cantidadPersonas = cantidadPersonas; }
 
-    public LocalDate getFecha() { return fecha; }
-    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
+    public LocalDate getFechaViaje() { return fechaViaje; }
+    public void setFechaViaje(LocalDate fechaViaje) { this.fechaViaje = fechaViaje; }
+
+    public Double getTotal() { return total; }
+    public void setTotal(Double total) { this.total = total; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 }
