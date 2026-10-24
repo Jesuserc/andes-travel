@@ -20,9 +20,10 @@
     <div class="card p-4 shadow-sm mb-4">
       <h5 class="mb-3">Registrar Cliente</h5>
       <form th:action="@{/admin/clientes/guardar}" th:object="${cliente}" method="post" class="row g-3">
-        <div class="col-md-4"><label class="form-label">Nombre</label><input type="text" th:field="*{nombre}" class="form-control" required></div>
-        <div class="col-md-4"><label class="form-label">Correo</label><input type="email" th:field="*{correo}" class="form-control" required></div>
-        <div class="col-md-4"><label class="form-label">Teléfono</label><input type="text" th:field="*{telefono}" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label">Nombre</label><input type="text" th:field="*{nombre}" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label">Correo</label><input type="email" th:field="*{correo}" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label">Teléfono</label><input type="text" th:field="*{telefono}" class="form-control"></div>
+        <div class="col-md-3"><label class="form-label">DNI</label><input type="text" th:field="*{dni}" class="form-control"></div>
         <div class="col-12"><button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Guardar Cliente</button></div>
       </form>
     </div>
@@ -35,13 +36,14 @@
 
     <div class="bg-white p-3 rounded shadow-sm table-responsive">
       <table class="table table-hover align-middle">
-        <thead><tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Teléfono</th><th></th></tr></thead>
+        <thead><tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>DNI</th><th></th></tr></thead>
         <tbody>
           <tr th:each="c : ${clientes}">
             <td th:text="${c.id}">1</td>
             <td th:text="${c.nombre}">Juan</td>
             <td th:text="${c.correo}">juan@gmail.com</td>
             <td th:text="${c.telefono}">999</td>
+            <td th:text="${c.dni}">12345678</td>
             <td class="text-end">
               <form th:action="@{/admin/clientes/eliminar/{id}(id=${c.id})}" method="post" class="d-inline"
                     onsubmit="return confirm('¿Eliminar este cliente?');">
@@ -49,7 +51,7 @@
               </form>
             </td>
           </tr>
-          <tr th:if="${#lists.isEmpty(clientes)}"><td colspan="5" class="text-center text-muted">Sin resultados.</td></tr>
+          <tr th:if="${#lists.isEmpty(clientes)}"><td colspan="6" class="text-center text-muted">Sin resultados.</td></tr>
         </tbody>
       </table>
     </div>

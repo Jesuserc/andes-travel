@@ -46,17 +46,13 @@
           <input type="text" th:field="*{imagenUrl}" class="form-control" required>
         </div>
         
-        <div class="col-12 col-sm-4">
-          <label class="form-label">Hotel</label>
-          <input type="text" th:field="*{hotel}" class="form-control">
+        <div class="col-12 col-sm-6">
+          <label class="form-label">Destino</label>
+          <input type="text" th:field="*{destino}" class="form-control">
         </div>
-        <div class="col-12 col-sm-4">
-          <label class="form-label">Movilidad</label>
-          <input type="text" th:field="*{movilidad}" class="form-control">
-        </div>
-        <div class="col-12 col-sm-4">
-          <label class="form-label">Aerolínea</label>
-          <input type="text" th:field="*{aerolinea}" class="form-control">
+        <div class="col-12 col-sm-6">
+          <label class="form-label">Categoría</label>
+          <input type="text" th:field="*{categoria}" class="form-control">
         </div>
         
         <div class="col-12">
@@ -66,12 +62,12 @@
         
         <div class="col-12 d-flex flex-wrap gap-3 gap-md-4 align-items-center">
           <div class="form-check">
-            <input type="checkbox" th:field="*{todoIncluido}" class="form-check-input">
-            <label class="form-check-label" th:for="${#ids.prev('todoIncluido')}">Todo incluido</label>
+            <input type="checkbox" th:field="*{activo}" class="form-check-input">
+            <label class="form-check-label" th:for="${#ids.prev('activo')}">Activo</label>
           </div>
           <div class="form-check">
-            <input type="checkbox" th:field="*{desayuno}" class="form-check-input">
-            <label class="form-check-label" th:for="${#ids.prev('desayuno')}">Desayuno</label>
+            <input type="checkbox" th:field="*{destacado}" class="form-check-input">
+            <label class="form-check-label" th:for="${#ids.prev('destacado')}">Destacado</label>
           </div>
         </div>
         
@@ -87,7 +83,7 @@
     <!-- CONSULTA -->
     <form th:action="@{/admin/dashboard}" method="get" class="row g-2 mb-3">
       <div class="col-12 col-md">
-        <input type="text" name="q" th:value="${q}" class="form-control" placeholder="Consultar por nombre, hotel, aerolínea, incluye...">
+        <input type="text" name="q" th:value="${q}" class="form-control" placeholder="Consultar por nombre, destino, categoría, incluye...">
       </div>
       <div class="col-6 col-md-auto">
         <button class="btn btn-primary w-100" type="submit"><i class="bi bi-search"></i> Buscar</button>
@@ -106,8 +102,8 @@
             <th>Nombre</th>
             <th>Duración</th>
             <th>Precio</th>
-            <th>Hotel</th>
-            <th>Aerolínea</th>
+            <th>Destino</th>
+            <th>Categoría</th>
             <th class="text-end">Acciones</th>
           </tr>
         </thead>
@@ -117,8 +113,8 @@
             <td th:text="${p.nombre}">Cusco</td>
             <td th:text="${p.duracion}">5 días</td>
             <td th:text="'S/ ' + ${#numbers.formatDecimal(p.precio, 1, 'COMMA', 2, 'POINT')}">S/ 1,890.00</td>
-            <td th:text="${p.hotel}">Hotel</td>
-            <td th:text="${p.aerolinea}">LATAM</td>
+            <td th:text="${p.destino}">Destino</td>
+            <td th:text="${p.categoria}">Categoría</td>
             <td class="text-end text-nowrap">
               <a th:href="@{/admin/paquetes/editar/{id}(id=${p.id})}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
               <form th:action="@{/admin/paquetes/eliminar/{id}(id=${p.id})}" method="post" class="d-inline"

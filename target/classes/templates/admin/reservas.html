@@ -31,23 +31,23 @@
           <input type="email" th:field="*{correoCliente}" class="form-control" required>
         </div>
         <div class="col-6 col-sm-6 col-md-3">
-          <label class="form-label">Viajeros</label>
-          <input type="number" min="1" th:field="*{numeroViajeros}" class="form-control" required>
+          <label class="form-label">Cantidad de Personas</label>
+          <input type="number" min="1" th:field="*{cantidadPersonas}" class="form-control" required>
         </div>
         <div class="col-6 col-sm-6 col-md-3">
-          <label class="form-label">Fecha</label>
-          <input type="date" th:field="*{fecha}" class="form-control">
+          <label class="form-label">Fecha de Viaje</label>
+          <input type="date" th:field="*{fechaViaje}" class="form-control">
         </div>
         <div class="col-12 col-md-6">
           <label class="form-label">Paquete</label>
-          <select th:field="*{nombrePaquete}" class="form-select" required>
+          <select th:field="*{paqueteSeleccionado}" class="form-select" required>
             <option value="">Seleccione...</option>
             <option th:each="p : ${paquetes}" th:value="${p.nombre}" th:text="${p.nombre}"></option>
           </select>
         </div>
-        <div class="col-12">
-          <label class="form-label">Mensaje</label>
-          <input type="text" th:field="*{mensaje}" class="form-control">
+        <div class="col-12 col-md-6">
+          <label class="form-label">Teléfono Cliente</label>
+          <input type="text" th:field="*{telefonoCliente}" class="form-control">
         </div>
         <div class="col-12">
           <button type="submit" class="btn btn-success w-100 w-sm-auto">
@@ -60,7 +60,7 @@
     <!-- CONSULTA Y BÚSQUEDA -->
     <form th:action="@{/admin/reservas}" method="get" class="row g-2 mb-3">
       <div class="col-12 col-md">
-        <input type="text" name="q" th:value="${q}" class="form-control" placeholder="Consultar por cliente, correo, paquete o mensaje...">
+        <input type="text" name="q" th:value="${q}" class="form-control" placeholder="Consultar por cliente, correo o paquete...">
       </div>
       <div class="col-6 col-md-auto">
         <button class="btn btn-primary w-100" type="submit"><i class="bi bi-search"></i> Buscar</button>
@@ -76,24 +76,24 @@
         <thead class="table-light">
           <tr>
             <th>ID</th>
-            <th>Fecha</th>
+            <th>Fecha Viaje</th>
             <th>Cliente</th>
             <th>Correo</th>
             <th>Paquete</th>
-            <th>Viajeros</th>
-            <th>Mensaje</th>
+            <th>Personas</th>
+            <th>Estado</th>
             <th class="text-end">Acción</th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="r : ${reservas}">
             <td th:text="${r.id}">1</td>
-            <td th:text="${r.fecha}">2026-09-27</td>
+            <td th:text="${r.fechaViaje}">2026-09-27</td>
             <td th:text="${r.nombreCliente}">Juan</td>
             <td th:text="${r.correoCliente}">juan@gmail.com</td>
-            <td th:text="${r.nombrePaquete}">Cusco</td>
-            <td th:text="${r.numeroViajeros}">2</td>
-            <td th:text="${r.mensaje}">Mensaje</td>
+            <td th:text="${r.paqueteSeleccionado}">Cusco</td>
+            <td th:text="${r.cantidadPersonas}">2</td>
+            <td><span class="badge bg-info" th:text="${r.estado}">PENDIENTE</span></td>
             <td class="text-end text-nowrap">
               <form th:action="@{/admin/reservas/eliminar/{id}(id=${r.id})}" method="post" class="d-inline"
                     onsubmit="return confirm('¿Eliminar esta reserva?');">
