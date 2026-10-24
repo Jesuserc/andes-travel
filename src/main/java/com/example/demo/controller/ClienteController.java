@@ -45,7 +45,7 @@ public class ClienteController {
     @GetMapping("/contacto")
     public String contacto(Model model) {
         model.addAttribute("paquetes", paqueteService.listarTodos());
-        model.addAttribute("reserva", new Reserva());
+    model.addAttribute("reserva", new Reserva());
         return "cliente/contacto";
     }
 
