@@ -72,7 +72,7 @@
         </div>
       </div>
 
-      <!-- Formulario Completo -->
+      <!-- Formulario con Desplegables en Cascada -->
       <div class="col-12 col-lg-7">
         <div class="card card-dark p-4 p-md-5">
           <div class="d-flex justify-content-between align-items-center mb-4">
@@ -82,7 +82,6 @@
 
           <form th:action="@{/reservar}" th:object="${reserva}" method="post" class="row g-3">
             
-            <!-- Campo oculto para enviar el Total al backend -->
             <input type="hidden" id="inputTotal" th:field="*{total}">
 
             <div class="col-12 col-md-6">
@@ -101,21 +100,37 @@
               </div>
             </div>
 
+            <!-- Combo 1: Filtro Principal (Destino / Región) -->
             <div class="col-12 col-md-6">
-              <label class="form-label small text-secondary">Destino / Paquete de Interés *</label>
+              <label class="form-label small text-secondary">1. Seleccione Destino *</label>
+              <div class="input-group">
+                <span class="input-group-text input-group-text-dark"><i class="bi bi-geo-alt"></i></span>
+                <select id="selectDestino" class="form-select form-select-dark" required>
+                  <option value="">Seleccione Región/Destino...</option>
+                  <option th:each="p : ${paquetes}" 
+                          th:value="${p.destino != null ? p.destino : 'General'}" 
+                          th:text="${p.destino != null ? p.destino : 'General'}"></option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Combo 2 (En Cascada): Paquetes filtrados según el Combo 1 -->
+            <div class="col-12 col-md-6">
+              <label class="form-label small text-secondary">2. Paquete Disponible *</label>
               <div class="input-group">
                 <span class="input-group-text input-group-text-dark"><i class="bi bi-map"></i></span>
-                <select id="selectPaquete" th:field="*{paqueteSeleccionado}" class="form-select form-select-dark" required>
-                  <option value="" data-precio="0">Selecciona un destino...</option>
+                <select id="selectPaquete" th:field="*{paqueteSeleccionado}" class="form-select form-select-dark" required disabled>
+                  <option value="" data-precio="0">Primero seleccione un destino...</option>
                   <option th:each="p : ${paquetes}" 
                           th:value="${p.nombre}" 
+                          th:data-destino="${p.destino != null ? p.destino : 'General'}"
                           th:data-precio="${p.precio}" 
                           th:text="${p.nombre + ' (S/ ' + p.precio + ')'}"></option>
                 </select>
               </div>
             </div>
 
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-6">
               <label class="form-label small text-secondary">N° Viajeros *</label>
               <div class="input-group">
                 <span class="input-group-text input-group-text-dark"><i class="bi bi-people"></i></span>
@@ -123,7 +138,7 @@
               </div>
             </div>
 
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-6">
               <label class="form-label small text-secondary">Fecha de Viaje *</label>
               <div class="input-group">
                 <span class="input-group-text input-group-text-dark"><i class="bi bi-calendar-event"></i></span>
@@ -160,16 +175,61 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Script Lógica de Cascada (Dependiente) y Presupuesto -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      const selectDestino = document.getElementById('selectDestino');
       const selectPaquete = document.getElementById('selectPaquete');
       const inputViajeros = document.getElementById('inputViajeros');
       const presupuestoTexto = document.getElementById('presupuestoTexto');
       const inputTotal = document.getElementById('inputTotal');
 
+      // Eliminar opciones duplicadas en el primer combo de Destinos
+      const destinosUnicos = new Set();
+      Array.from(selectDestino.options).forEach(opt => {
+        if (opt.value && destinosUnicos.has(opt.value)) {
+          opt.remove();
+        } else if (opt.value) {
+          destinosUnicos.add(opt.value);
+        }
+      });
+
+      const opcionesPaquetes = Array.from(selectPaquete.options);
+
+      selectDestino.addEventListener('change', function() {
+        const destinoSeleccionado = this.value;
+
+        selectPaquete.innerHTML = '';
+        
+        if (!destinoSeleccionado) {
+          selectPaquete.disabled = true;
+          const defaultOpt = document.createElement('option');
+          defaultOpt.value = '';
+          defaultOpt.setAttribute('data-precio', '0');
+          defaultOpt.textContent = 'Primero seleccione un destino...';
+          selectPaquete.appendChild(defaultOpt);
+        } else {
+          selectPaquete.disabled = false;
+          
+          const placeholderOpt = document.createElement('option');
+          placeholderOpt.value = '';
+          placeholderOpt.setAttribute('data-precio', '0');
+          placeholderOpt.textContent = 'Seleccione un paquete...';
+          selectPaquete.appendChild(placeholderOpt);
+
+          // Filtrar en cascada
+          opcionesPaquetes.forEach(opt => {
+            if (opt.getAttribute('data-destino') === destinoSeleccionado) {
+              selectPaquete.appendChild(opt.cloneNode(true));
+            }
+          });
+        }
+        calcularPresupuesto();
+      });
+
       function calcularPresupuesto() {
         const optionSeleccionada = selectPaquete.options[selectPaquete.selectedIndex];
-        const precioUnitario = parseFloat(optionSeleccionada.getAttribute('data-precio')) || 0;
+        const precioUnitario = optionSeleccionada ? (parseFloat(optionSeleccionada.getAttribute('data-precio')) || 0) : 0;
         const cantidad = parseInt(inputViajeros.value) || 0;
         const total = precioUnitario * cantidad;
 
