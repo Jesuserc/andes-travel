@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Clientes - Admin</title>
+  <title>Directorio de Clientes - Admin</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
@@ -11,50 +11,172 @@
 
   <div th:replace="~{layout/admin :: nav('clientes')}"></div>
 
-  <div class="container mb-5">
-    <h2 class="mb-3">Clientes</h2>
+  <div class="container my-3 my-md-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Directorio y Fidelización de Clientes</h2>
+    </div>
+
     <div th:if="${ok}" class="alert alert-success alert-dismissible fade show" role="alert">
-      <span th:text="${ok}"></span><button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <i class="bi bi-check-circle-fill me-2"></i><span th:text="${ok}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 
-    <div class="card p-4 shadow-sm mb-4">
-      <h5 class="mb-3">Registrar Cliente</h5>
-      <form th:action="@{/admin/clientes/guardar}" th:object="${cliente}" method="post" class="row g-3">
-        <div class="col-md-3"><label class="form-label">Nombre</label><input type="text" th:field="*{nombre}" class="form-control" required></div>
-        <div class="col-md-3"><label class="form-label">Correo</label><input type="email" th:field="*{correo}" class="form-control" required></div>
-        <div class="col-md-3"><label class="form-label">Teléfono</label><input type="text" th:field="*{telefono}" class="form-control"></div>
-        <div class="col-md-3"><label class="form-label">DNI</label><input type="text" th:field="*{dni}" class="form-control"></div>
-        <div class="col-12"><button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Guardar Cliente</button></div>
-      </form>
+    <!-- TARJETAS DE MÉTRICAS RÁPIDAS -->
+    <div class="row g-3 mb-4">
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card border-0 shadow-sm p-3 bg-white border-start border-4 border-primary rounded">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <span class="text-muted small fw-semibold">Total Clientes Registrados</span>
+              <h3 class="mb-0 fw-bold text-dark" th:text="${#lists.size(clientes)}">0</h3>
+            </div>
+            <div class="bg-primary bg-opacity-10 p-3 rounded-circle text-primary">
+              <i class="bi bi-people-fill fs-3"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card border-0 shadow-sm p-3 bg-white border-start border-4 border-success rounded">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <span class="text-muted small fw-semibold">Origen de Datos</span>
+              <h5 class="mb-0 fw-bold text-success">Automático (Vía Cotización)</h5>
+            </div>
+            <div class="bg-success bg-opacity-10 p-3 rounded-circle text-success">
+              <i class="bi bi-diagram-3-fill fs-3"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card border-0 shadow-sm p-3 bg-white border-start border-4 border-warning rounded">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <span class="text-muted small fw-semibold">Estado del CRM</span>
+              <h5 class="mb-0 fw-bold text-warning">Sincronizado</h5>
+            </div>
+            <div class="bg-warning bg-opacity-10 p-3 rounded-circle text-warning">
+              <i class="bi bi-check2-square fs-3"></i>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <form th:action="@{/admin/clientes}" method="get" class="input-group mb-3">
-      <input type="text" name="q" th:value="${q}" class="form-control" placeholder="Consultar por nombre, correo o teléfono...">
-      <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i> Buscar</button>
-      <a th:href="@{/admin/clientes}" class="btn btn-outline-secondary">Limpiar</a>
+    <!-- CONSULTA Y BÚSQUEDA -->
+    <form th:action="@{/admin/clientes}" method="get" class="row g-2 mb-4">
+      <div class="col-12 col-md">
+        <input type="text" name="q" th:value="${q}" class="form-control" placeholder="Consultar por nombre, correo, teléfono o DNI...">
+      </div>
+      <div class="col-6 col-md-auto">
+        <button class="btn btn-primary w-100" type="submit"><i class="bi bi-search"></i> Buscar</button>
+      </div>
+      <div class="col-6 col-md-auto">
+        <a th:href="@{/admin/clientes}" class="btn btn-outline-secondary w-100">Limpiar</a>
+      </div>
     </form>
 
-    <div class="bg-white p-3 rounded shadow-sm table-responsive">
-      <table class="table table-hover align-middle">
-        <thead><tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>DNI</th><th></th></tr></thead>
-        <tbody>
-          <tr th:each="c : ${clientes}">
-            <td th:text="${c.id}">1</td>
-            <td th:text="${c.nombre}">Juan</td>
-            <td th:text="${c.correo}">juan@gmail.com</td>
-            <td th:text="${c.telefono}">999</td>
-            <td th:text="${c.dni}">12345678</td>
-            <td class="text-end">
-              <form th:action="@{/admin/clientes/eliminar/{id}(id=${c.id})}" method="post" class="d-inline"
-                    onsubmit="return confirm('¿Eliminar este cliente?');">
-                <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-              </form>
-            </td>
-          </tr>
-          <tr th:if="${#lists.isEmpty(clientes)}"><td colspan="6" class="text-center text-muted">Sin resultados.</td></tr>
-        </tbody>
-      </table>
+    <!-- LISTADO DE CLIENTES (DIRECTORIO) -->
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white py-3">
+        <h5 class="card-title mb-0 fw-bold text-dark">
+          <i class="bi bi-person-lines-fill me-2 text-primary"></i> Clientes Generados por Reservas
+        </h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>ID</th>
+                <th>Nombre del Cliente</th>
+                <th>Correo Electrónico</th>
+                <th>Teléfono</th>
+                <th>DNI / Doc</th>
+                <th class="text-end">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="c : ${clientes}">
+                <td th:text="${c.id}" class="fw-bold">1</td>
+                <td>
+                  <span th:text="${c.nombre}" class="fw-semibold">Juan Pérez</span>
+                </td>
+                <td th:text="${c.correo}">juan@gmail.com</td>
+                <td>
+                  <span th:text="${c.telefono != null ? c.telefono : 'Sin registra'}" class="me-2">999888777</span>
+                  <a th:if="${c.telefono != null and !#strings.isEmpty(c.telefono)}" 
+                     th:href="'https://wa.me/51' + ${c.telefono}" target="_blank" 
+                     class="btn btn-sm btn-outline-success border-0 px-1 py-0" title="Contactar por WhatsApp">
+                    <i class="bi bi-whatsapp"></i>
+                  </a>
+                </td>
+                <td th:text="${c.dni != null ? c.dni : '-'}">-</td>
+                <td class="text-end text-nowrap">
+                  <!-- Botón Editar para completar DNI u otros datos -->
+                  <button type="button" class="btn btn-warning btn-sm me-1" 
+                          data-bs-toggle="modal" 
+                          th:data-bs-target="'#modalEditar' + ${c.id}" title="Editar Cliente">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+
+                  <!-- Botón Eliminar -->
+                  <form th:action="@{/admin/clientes/eliminar/{id}(id=${c.id})}" method="post" class="d-inline"
+                        onsubmit="return confirm('¿Desea eliminar este cliente del directorio?');">
+                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Eliminar"><i class="bi bi-trash"></i></button>
+                  </form>
+
+                  <!-- Modal para Editar DNI / Datos adicionales -->
+                  <div class="modal fade text-start" th:id="'modalEditar' + ${c.id}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title fw-bold">Actualizar Datos de Cliente</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form th:action="@{/admin/clientes/guardar}" method="post">
+                          <div class="modal-body row g-3">
+                            <input type="hidden" name="id" th:value="${c.id}">
+                            <div class="col-12">
+                              <label class="form-label">Nombre</label>
+                              <input type="text" name="nombre" th:value="${c.nombre}" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                              <label class="form-label">Correo</label>
+                              <input type="email" name="correo" th:value="${c.correo}" class="form-control" required>
+                            </div>
+                            <div class="col-6">
+                              <label class="form-label">Teléfono</label>
+                              <input type="text" name="telefono" th:value="${c.telefono}" class="form-control">
+                            </div>
+                            <div class="col-6">
+                              <label class="form-label">DNI / Documento</label>
+                              <input type="text" name="dni" th:value="${c.dni}" class="form-control" placeholder="12345678">
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Guardar Cambios</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                </td>
+              </tr>
+              <tr th:if="${#lists.isEmpty(clientes)}">
+                <td colspan="6" class="text-center text-muted py-4">No hay clientes registrados en el directorio aún.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

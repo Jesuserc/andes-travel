@@ -12,8 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class AdminController {
@@ -32,7 +32,9 @@ public class AdminController {
 
     // ---------- Login / Logout ----------
     @GetMapping("/login")
-    public String login() { return "admin/login"; }
+    public String login() { 
+        return "admin/login"; 
+    }
 
     @PostMapping("/login")
     public String validarLogin(@RequestParam String usuario, @RequestParam String password,
@@ -100,6 +102,33 @@ public class AdminController {
         return "redirect:/admin/reservas";
     }
 
+    @PostMapping("/admin/reservas/atender/{id}")
+    public String atenderReserva(@PathVariable Long id, RedirectAttributes ra) {
+        Optional<Reserva> optReserva = reservaService.obtenerPorId(id);
+        if (optReserva.isPresent()) {
+            Reserva reserva = optReserva.get();
+            reserva.setEstado("ATENDIDA");
+            reservaService.guardar(reserva);
+
+            // Sincronización automática con la tabla 'clientes'
+            if (reserva.getCorreoCliente() != null && !reserva.getCorreoCliente().isEmpty()) {
+                boolean existe = clienteService.listarTodos().stream()
+                        .anyMatch(c -> c.getCorreo() != null && c.getCorreo().equalsIgnoreCase(reserva.getCorreoCliente()));
+                
+                if (!existe) {
+                    Cliente nuevoCliente = new Cliente();
+                    nuevoCliente.setNombre(reserva.getNombreCliente());
+                    nuevoCliente.setCorreo(reserva.getCorreoCliente());
+                    nuevoCliente.setTelefono(reserva.getTelefonoCliente());
+                    clienteService.guardar(nuevoCliente);
+                }
+            }
+
+            ra.addFlashAttribute("ok", "Reserva #" + id + " marcada como ATENDIDA y cliente sincronizado en el Directorio.");
+        }
+        return "redirect:/admin/reservas";
+    }
+
     @PostMapping("/admin/reservas/eliminar/{id}")
     public String eliminarReserva(@PathVariable Long id, RedirectAttributes ra) {
         reservaService.eliminar(id);
@@ -119,7 +148,7 @@ public class AdminController {
     @PostMapping("/admin/clientes/guardar")
     public String guardarCliente(@ModelAttribute Cliente cliente, RedirectAttributes ra) {
         clienteService.guardar(cliente);
-        ra.addFlashAttribute("ok", "Cliente registrado correctamente.");
+        ra.addFlashAttribute("ok", "Cliente guardado correctamente.");
         return "redirect:/admin/clientes";
     }
 
@@ -132,15 +161,72 @@ public class AdminController {
 
     // ---------- Gráficos (2 páginas) ----------
     @GetMapping("/admin/reportes")
-    public String reportes() { return "redirect:/admin/graficos/paquetes"; }
+    public String reportes() { 
+        return "redirect:/admin/graficos/paquetes"; 
+    }
 
     @GetMapping("/admin/graficos/paquetes")
     public String graficosPaquetes(Model model) {
+        List<Paquete> paquetes = paqueteService.listarTodos();
+
+        // Nombres y Precios
+        List<String> preciosLabels = paquetes.stream().map(Paquete::getNombre).collect(Collectors.toList());
+        List<Double> preciosValues = paquetes.stream().map(Paquete::getPrecio).collect(Collectors.toList());
+
+        // Conteo de Paquetes por Destino
+        Map<String, Long> destinoMap = paquetes.stream()
+                .filter(p -> p.getDestino() != null && !p.getDestino().isEmpty())
+                .collect(Collectors.groupingBy(Paquete::getDestino, Collectors.counting()));
+
+        List<String> aeroLabels = new ArrayList<>(destinoMap.keySet());
+        List<Long> aeroValues = new ArrayList<>(destinoMap.values());
+
+        model.addAttribute("preciosLabels", preciosLabels);
+        model.addAttribute("preciosValues", preciosValues);
+        model.addAttribute("aeroLabels", aeroLabels);
+        model.addAttribute("aeroValues", aeroValues);
+
         return "admin/graficos-paquetes";
     }
 
     @GetMapping("/admin/graficos/reservas")
     public String graficosReservas(Model model) {
+        List<Reserva> reservas = reservaService.listarTodas();
+
+        // Agrupación por Fecha de Viaje
+        Map<String, Long> fechaMap = reservas.stream()
+                .filter(r -> r.getFechaViaje() != null)
+                .collect(Collectors.groupingBy(r -> r.getFechaViaje().toString(), Collectors.counting()));
+
+        List<String> fechaLabels = new ArrayList<>(fechaMap.keySet());
+        List<Long> fechaValues = new ArrayList<>(fechaMap.values());
+
+        // Agrupación de Reservas por Paquete
+        Map<String, Long> paqMap = reservas.stream()
+                .filter(r -> r.getPaqueteSeleccionado() != null)
+                .collect(Collectors.groupingBy(Reserva::getPaqueteSeleccionado, Collectors.counting()));
+
+        List<String> paqLabels = new ArrayList<>(paqMap.keySet());
+        List<Long> paqValues = new ArrayList<>(paqMap.values());
+
+        // Cantidad de Viajeros por Paquete
+        Map<String, Integer> viajMap = reservas.stream()
+                .filter(r -> r.getPaqueteSeleccionado() != null && r.getCantidadPersonas() != null)
+                .collect(Collectors.groupingBy(
+                        Reserva::getPaqueteSeleccionado,
+                        Collectors.summingInt(Reserva::getCantidadPersonas)
+                ));
+
+        List<String> viajLabels = new ArrayList<>(viajMap.keySet());
+        List<Integer> viajValues = new ArrayList<>(viajMap.values());
+
+        model.addAttribute("fechaLabels", fechaLabels);
+        model.addAttribute("fechaValues", fechaValues);
+        model.addAttribute("paqLabels", paqLabels);
+        model.addAttribute("paqValues", paqValues);
+        model.addAttribute("viajLabels", viajLabels);
+        model.addAttribute("viajValues", viajValues);
+
         return "admin/graficos-reservas";
     }
 }
