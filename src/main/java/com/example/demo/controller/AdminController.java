@@ -1,19 +1,28 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.example.demo.model.Cliente;
 import com.example.demo.model.Paquete;
 import com.example.demo.model.Reserva;
 import com.example.demo.service.ClienteService;
 import com.example.demo.service.PaqueteService;
 import com.example.demo.service.ReservaService;
-import jakarta.servlet.http.HttpSession;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AdminController {
@@ -88,7 +97,19 @@ public class AdminController {
     // ---------- Reservas ----------
     @GetMapping("/admin/reservas")
     public String verReservas(@RequestParam(required = false) String q, Model model) {
-        model.addAttribute("reservas", reservaService.listarTodas());
+        List<Reserva> lista = reservaService.listarTodas();
+        
+        // Filtro de búsqueda por cliente, correo o paquete
+        if (q != null && !q.trim().isEmpty()) {
+            String query = q.toLowerCase().trim();
+            lista = lista.stream()
+                    .filter(r -> (r.getNombreCliente() != null && r.getNombreCliente().toLowerCase().contains(query))
+                              || (r.getCorreoCliente() != null && r.getCorreoCliente().toLowerCase().contains(query))
+                              || (r.getPaqueteSeleccionado() != null && r.getPaqueteSeleccionado().toLowerCase().contains(query)))
+                    .collect(Collectors.toList());
+        }
+
+        model.addAttribute("reservas", lista);
         model.addAttribute("paquetes", paqueteService.listarTodos());
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("q", q);
@@ -137,9 +158,22 @@ public class AdminController {
     }
 
     // ---------- Clientes ----------
-    @GetMapping("/admin/clientes")
+@GetMapping("/admin/clientes")
     public String verClientes(@RequestParam(required = false) String q, Model model) {
-        model.addAttribute("clientes", clienteService.listarTodos());
+        List<Cliente> lista = clienteService.listarTodos();
+
+        // Filtro de búsqueda por nombre, correo, teléfono o DNI
+        if (q != null && !q.trim().isEmpty()) {
+            String query = q.toLowerCase().trim();
+            lista = lista.stream()
+                    .filter(c -> (c.getNombre() != null && c.getNombre().toLowerCase().contains(query))
+                              || (c.getCorreo() != null && c.getCorreo().toLowerCase().contains(query))
+                              || (c.getTelefono() != null && c.getTelefono().toLowerCase().contains(query))
+                              || (c.getDni() != null && c.getDni().toLowerCase().contains(query)))
+                    .collect(Collectors.toList());
+        }
+
+        model.addAttribute("clientes", lista);
         model.addAttribute("cliente", new Cliente());
         model.addAttribute("q", q);
         return "admin/clientes";

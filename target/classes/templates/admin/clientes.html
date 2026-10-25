@@ -67,18 +67,17 @@
     </div>
 
     <!-- CONSULTA Y BÚSQUEDA -->
-    <form th:action="@{/admin/clientes}" method="get" class="row g-2 mb-4">
-      <div class="col-12 col-md">
-        <input type="text" name="q" th:value="${q}" class="form-control" placeholder="Consultar por nombre, correo, teléfono o DNI...">
-      </div>
-      <div class="col-6 col-md-auto">
-        <button class="btn btn-primary w-100" type="submit"><i class="bi bi-search"></i> Buscar</button>
-      </div>
-      <div class="col-6 col-md-auto">
-        <a th:href="@{/admin/clientes}" class="btn btn-outline-secondary w-100">Limpiar</a>
-      </div>
-    </form>
-
+<form th:action="@{/admin/reservas}" method="get" class="row g-2 mb-4">
+  <div class="col-12 col-md">
+    <input type="text" name="q" th:value="${q}" class="form-control" placeholder="Buscar por cliente, correo o paquete...">
+  </div>
+  <div class="col-6 col-md-auto">
+    <button class="btn btn-primary w-100" type="submit"><i class="bi bi-search"></i> Buscar</button>
+  </div>
+  <div class="col-6 col-md-auto">
+    <a th:href="@{/admin/reservas}" class="btn btn-outline-secondary w-100">Limpiar</a>
+  </div>
+</form>
     <!-- LISTADO DE CLIENTES (DIRECTORIO) -->
     <div class="card shadow-sm border-0">
       <div class="card-header bg-white py-3">
