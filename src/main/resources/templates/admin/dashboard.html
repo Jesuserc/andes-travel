@@ -18,7 +18,7 @@
       <span th:text="${ok}"></span><button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 
-    <!-- FORMULARIO: registrar / editar -->
+    <!-- FORMULARIO: Registrar / Editar con Campos en Cascada -->
     <div class="card p-3 p-md-4 shadow-sm mb-4">
       <h5 class="mb-3" th:text="${editando} ? 'Editar Paquete' : 'Registrar Nuevo Paquete'">Registrar Nuevo Paquete</h5>
       <form th:action="@{/admin/paquetes/guardar}" th:object="${paquete}" method="post" class="row g-3">
@@ -43,16 +43,29 @@
         </div>
         <div class="col-12 col-md-6">
           <label class="form-label">URL Imagen</label>
-          <input type="text" th:field="*{imagenUrl}" class="form-control" required>
+          <input type="text" th:field="*{imagenUrl}" class="form-control" placeholder="https://..." required>
         </div>
         
+        <!-- 1. Primer Desplegable: Destino -->
         <div class="col-12 col-sm-6">
-          <label class="form-label">Destino</label>
-          <input type="text" th:field="*{destino}" class="form-control">
+          <label class="form-label fw-semibold">1. Seleccionar Destino *</label>
+          <select id="selectAdminDestino" th:field="*{destino}" class="form-select" required>
+            <option value="">Seleccione Región / Destino...</option>
+            <option value="Cusco">Cusco</option>
+            <option value="Arequipa">Arequipa</option>
+            <option value="Ica">Ica</option>
+            <option value="San Martín">San Martín (Tarapoto)</option>
+            <option value="Puno">Puno</option>
+            <option value="Lima">Lima</option>
+          </select>
         </div>
+
+        <!-- 2. Segundo Desplegable (En Cascada): Categoría según el Destino elegido -->
         <div class="col-12 col-sm-6">
-          <label class="form-label">Categoría</label>
-          <input type="text" th:field="*{categoria}" class="form-control">
+          <label class="form-label fw-semibold">2. Categoría Asignada *</label>
+          <select id="selectAdminCategoria" th:field="*{categoria}" class="form-select" required>
+            <option value="">Primero seleccione un destino...</option>
+          </select>
         </div>
         
         <div class="col-12">
@@ -62,12 +75,12 @@
         
         <div class="col-12 d-flex flex-wrap gap-3 gap-md-4 align-items-center">
           <div class="form-check">
-            <input type="checkbox" th:field="*{activo}" class="form-check-input">
-            <label class="form-check-label" th:for="${#ids.prev('activo')}">Activo</label>
+            <input type="checkbox" th:field="*{activo}" class="form-check-input" id="checkActivo">
+            <label class="form-check-label" for="checkActivo">Activo</label>
           </div>
           <div class="form-check">
-            <input type="checkbox" th:field="*{destacado}" class="form-check-input">
-            <label class="form-check-label" th:for="${#ids.prev('destacado')}">Destacado</label>
+            <input type="checkbox" th:field="*{destacado}" class="form-check-input" id="checkDestacado">
+            <label class="form-check-label" for="checkDestacado">Destacado</label>
           </div>
         </div>
         
@@ -80,7 +93,7 @@
       </form>
     </div>
 
-    <!-- CONSULTA -->
+    <!-- CONSULTA Y BÚSQUEDA -->
     <form th:action="@{/admin/dashboard}" method="get" class="row g-2 mb-3">
       <div class="col-12 col-md">
         <input type="text" name="q" th:value="${q}" class="form-control" placeholder="Consultar por nombre, destino, categoría, incluye...">
@@ -93,7 +106,7 @@
       </div>
     </form>
 
-    <!-- LISTADO -->
+    <!-- LISTADO DE PAQUETES -->
     <div class="table-responsive bg-white p-3 rounded shadow-sm">
       <table class="table table-hover align-middle mb-0">
         <thead class="table-light">
@@ -132,5 +145,62 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script Lógica de Cascada (Destino -> Categoría) -->
+  <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      const selectDestino = document.getElementById('selectAdminDestino');
+      const selectCategoria = document.getElementById('selectAdminCategoria');
+
+      // Mapa de Categorías dependientes por Destino
+      const categoriasPorDestino = {
+        'Cusco': ['Trekking & Inca Trail', 'Arqueológico e Histórico', 'Luxury & Todo Incluido'],
+        'Arequipa': ['Cultura y Tradición', 'Ruta del Colca & Naturaleza', 'Aventura en Cañones'],
+        'Ica': ['Oasis & Aventura en Dunas', 'Ruta del Pisco', 'Sol, Playa y Reserva'],
+        'San Martín': ['Ecoturismo & Cataratas', 'Selva & Excursión', 'Relax & Naturaleza'],
+        'Puno': ['Misticismo & Lago Titicaca', 'Cultura Viva'],
+        'Lima': ['Gastronomía VIP', 'City Tour Histórico']
+      };
+
+      // Guardar categoría actual si se está EDITANDO un paquete
+      /*[# th:if="${paquete.categoria != null}"]*/
+      const categoriaActual = /*[[${paquete.categoria}]]*/ '';
+      /*[/]*/
+
+      function actualizarCategorias() {
+        const destinoSeleccionado = selectDestino.value;
+        selectCategoria.innerHTML = '';
+
+        if (!destinoSeleccionado || !categoriasPorDestino[destinoSeleccionado]) {
+          const defaultOpt = document.createElement('option');
+          defaultOpt.value = '';
+          defaultOpt.textContent = 'Primero seleccione un destino...';
+          selectCategoria.appendChild(defaultOpt);
+        } else {
+          const defaultOpt = document.createElement('option');
+          defaultOpt.value = '';
+          defaultOpt.textContent = 'Seleccione Categoría...';
+          selectCategoria.appendChild(defaultOpt);
+
+          categoriasPorDestino[destinoSeleccionado].forEach(cat => {
+            const opt = document.createElement('option');
+            opt.value = cat;
+            opt.textContent = cat;
+            if (typeof categoriaActual !== 'undefined' && categoriaActual === cat) {
+              opt.selected = true;
+            }
+            selectCategoria.appendChild(opt);
+          });
+        }
+      }
+
+      selectDestino.addEventListener('change', actualizarCategorias);
+
+      // Si ya hay un destino seleccionado al cargar (al Editar)
+      if (selectDestino.value) {
+        actualizarCategorias();
+      }
+    });
+  </script>
 </body>
 </html>
