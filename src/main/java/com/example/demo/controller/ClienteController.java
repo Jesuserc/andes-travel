@@ -1,13 +1,20 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.demo.model.Paquete;
 import com.example.demo.model.Reserva;
 import com.example.demo.service.ClienteService;
 import com.example.demo.service.PaqueteService;
 import com.example.demo.service.ReservaService;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ClienteController {
@@ -31,8 +38,13 @@ public class ClienteController {
     }
 
     @GetMapping("/destinos")
-    public String destinos(Model model) {
-        model.addAttribute("paquetes", paqueteService.listarTodos());
+    public String destinos(@RequestParam(required = false) String destino, Model model) {
+        List<Paquete> lista = (destino != null && !destino.isEmpty()) 
+                ? paqueteService.listarPorDestino(destino) 
+                : paqueteService.listarTodos();
+
+        model.addAttribute("paquetes", lista);
+        model.addAttribute("destinoSeleccionado", destino);
         return "cliente/destinos";
     }
 

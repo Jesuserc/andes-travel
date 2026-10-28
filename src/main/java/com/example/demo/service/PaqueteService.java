@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Paquete;
-import com.example.demo.repository.PaqueteRepository;
-import jakarta.annotation.PostConstruct;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.Paquete;
+import com.example.demo.repository.PaqueteRepository;
+
+import jakarta.annotation.PostConstruct;
 
 @Service
 public class PaqueteService {
@@ -47,6 +49,18 @@ public class PaqueteService {
         return paqueteRepository.findAll();
     }
 
+    // Nuevo método para filtrar paquetes por destino desde el menú desplegable
+    public List<Paquete> listarPorDestino(String destino) {
+        if (destino == null || destino.trim().isEmpty() || "TODOS".equalsIgnoreCase(destino)) {
+            return paqueteRepository.findAll();
+        }
+        String destLower = destino.toLowerCase().trim();
+        return paqueteRepository.findAll().stream()
+                .filter(p -> (p.getDestino() != null && p.getDestino().toLowerCase().contains(destLower))
+                          || (p.getNombre() != null && p.getNombre().toLowerCase().contains(destLower)))
+                .toList();
+    }
+
     public List<Paquete> buscar(String q) {
         if (q != null && !q.trim().isEmpty()) {
             return paqueteRepository.findAll().stream()
@@ -58,8 +72,8 @@ public class PaqueteService {
     }
 
     public Optional<Paquete> obtenerPorId(Long id) {
-    return paqueteRepository.findById(id);
-}
+        return paqueteRepository.findById(id);
+    }
 
     public void guardar(Paquete paquete) {
         paqueteRepository.save(paquete);

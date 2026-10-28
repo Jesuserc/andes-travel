@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.dto.ReservaDTO;
 import com.example.demo.model.Cliente;
 import com.example.demo.model.Paquete;
 import com.example.demo.model.Reserva;
@@ -94,22 +95,24 @@ public class AdminController {
         return "redirect:/admin/dashboard";
     }
 
-    // ---------- Reservas ----------
+    // ---------- Reservas (Utilizando DTOs) ----------
     @GetMapping("/admin/reservas")
     public String verReservas(@RequestParam(required = false) String q, Model model) {
-        List<Reserva> lista = reservaService.listarTodas();
-        
-        // Filtro de búsqueda por cliente, correo o paquete
+        // Obtenemos la lista completa usando el DTO
+        List<ReservaDTO> dtoList = reservaService.listarReservasDTO();
+
+        // Filtro de búsqueda por cliente, correo o paquete en la lista de DTOs
         if (q != null && !q.trim().isEmpty()) {
             String query = q.toLowerCase().trim();
-            lista = lista.stream()
+            dtoList = dtoList.stream()
                     .filter(r -> (r.getNombreCliente() != null && r.getNombreCliente().toLowerCase().contains(query))
-                              || (r.getCorreoCliente() != null && r.getCorreoCliente().toLowerCase().contains(query))
-                              || (r.getPaqueteSeleccionado() != null && r.getPaqueteSeleccionado().toLowerCase().contains(query)))
+                              || (r.getEmailCliente() != null && r.getEmailCliente().toLowerCase().contains(query))
+                              || (r.getNombrePaquete() != null && r.getNombrePaquete().toLowerCase().contains(query)))
                     .collect(Collectors.toList());
         }
 
-        model.addAttribute("reservas", lista);
+        model.addAttribute("reservasDTO", dtoList);
+        model.addAttribute("reservas", reservaService.listarTodas()); // Mantiene compatibilidad con formularios de edición
         model.addAttribute("paquetes", paqueteService.listarTodos());
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("q", q);
@@ -158,7 +161,7 @@ public class AdminController {
     }
 
     // ---------- Clientes ----------
-@GetMapping("/admin/clientes")
+    @GetMapping("/admin/clientes")
     public String verClientes(@RequestParam(required = false) String q, Model model) {
         List<Cliente> lista = clienteService.listarTodos();
 

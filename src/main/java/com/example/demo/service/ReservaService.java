@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dto.ReservaDTO;
 import com.example.demo.model.Reserva;
 import com.example.demo.repository.PaqueteRepository;
 import com.example.demo.repository.ReservaRepository;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReservaService {
@@ -22,6 +24,9 @@ public class ReservaService {
     public List<Reserva> listarTodas() {
         return reservaRepository.findAll();
     }
+    public List<ReservaDTO> listarReservasDTO() {
+    return reservaRepository.obtenerReservasDetalladas();
+}
 
     public Optional<Reserva> obtenerPorId(Long id) {
         return reservaRepository.findById(id);
