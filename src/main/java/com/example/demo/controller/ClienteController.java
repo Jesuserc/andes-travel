@@ -25,7 +25,10 @@ public class ClienteController {
     }
 
     @GetMapping("/")
-    public String inicio() { return "cliente/index"; }
+    public String inicio(Model model) { 
+        model.addAttribute("paquetes", paqueteService.listarTodos());
+        return "cliente/index"; 
+    }
 
     @GetMapping("/destinos")
     public String destinos(Model model) {
@@ -38,10 +41,11 @@ public class ClienteController {
         model.addAttribute("paquetes", paqueteService.listarTodos());
         return "cliente/paquetes";
     }
-@GetMapping("/confirmacion")
-public String confirmacion() {
-    return "cliente/confirmacion";
-}
+
+    @GetMapping("/confirmacion")
+    public String confirmacion() {
+        return "cliente/confirmacion";
+    }
 
     @GetMapping("/nosotros")
     public String nosotros() { return "cliente/nosotros"; }
@@ -49,13 +53,13 @@ public String confirmacion() {
     @GetMapping("/contacto")
     public String contacto(Model model) {
         model.addAttribute("paquetes", paqueteService.listarTodos());
-    model.addAttribute("reserva", new Reserva());
+        model.addAttribute("reserva", new Reserva());
         return "cliente/contacto";
     }
 
-@PostMapping("/reservar")
-public String guardarReserva(@ModelAttribute("reserva") Reserva reserva, RedirectAttributes redirectAttributes) {
-    reservaService.guardar(reserva);
-    return "redirect:/confirmacion";
-}
+    @PostMapping("/reservar")
+    public String guardarReserva(@ModelAttribute("reserva") Reserva reserva, RedirectAttributes redirectAttributes) {
+        reservaService.guardar(reserva);
+        return "redirect:/confirmacion";
+    }
 }
