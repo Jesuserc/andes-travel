@@ -96,12 +96,23 @@ public class AdminController {
     }
 
     // ---------- Reservas (Utilizando DTOs) ----------
+    // ---------- Reservas (Con DTOs y Filtro Funcional) ----------
     @GetMapping("/admin/reservas")
-    public String verReservas(@RequestParam(required = false) String q, Model model) {
-        // Obtenemos la lista completa usando el DTO
+    public String verReservas(@RequestParam(required = false) String q, 
+                            @RequestParam(required = false) String paquete, 
+                            Model model) {
+        
         List<ReservaDTO> dtoList = reservaService.listarReservasDTO();
 
-        // Filtro de búsqueda por cliente, correo o paquete en la lista de DTOs
+        // 1. Filtro desplegable por Paquete Seleccionado
+        if (paquete != null && !paquete.trim().isEmpty()) {
+            String paqLower = paquete.toLowerCase().trim();
+            dtoList = dtoList.stream()
+                    .filter(r -> r.getNombrePaquete() != null && r.getNombrePaquete().toLowerCase().contains(paqLower))
+                    .collect(Collectors.toList());
+        }
+
+        // 2. Filtro de Búsqueda libre
         if (q != null && !q.trim().isEmpty()) {
             String query = q.toLowerCase().trim();
             dtoList = dtoList.stream()
@@ -112,10 +123,11 @@ public class AdminController {
         }
 
         model.addAttribute("reservasDTO", dtoList);
-        model.addAttribute("reservas", reservaService.listarTodas()); // Mantiene compatibilidad con formularios de edición
         model.addAttribute("paquetes", paqueteService.listarTodos());
         model.addAttribute("reserva", new Reserva());
         model.addAttribute("q", q);
+        model.addAttribute("paqueteSeleccionado", paquete);
+        
         return "admin/reservas";
     }
 

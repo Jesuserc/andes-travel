@@ -10,10 +10,11 @@ public class ReservaDTO {
     private LocalDate fechaViaje;
     private Integer cantidadPersonas;
     private Double precioTotal;
+    private String estado;
 
     public ReservaDTO(Long idReserva, String nombreCliente, String emailCliente, 
                       String nombrePaquete, LocalDate fechaViaje, 
-                      Integer cantidadPersonas, Double precioTotal) {
+                      Integer cantidadPersonas, Double precioTotal, String estado) {
         this.idReserva = idReserva;
         this.nombreCliente = nombreCliente;
         this.emailCliente = emailCliente;
@@ -21,6 +22,7 @@ public class ReservaDTO {
         this.fechaViaje = fechaViaje;
         this.cantidadPersonas = cantidadPersonas;
         this.precioTotal = precioTotal;
+        this.estado = estado;
     }
 
     // Getters y Setters
@@ -44,4 +46,7 @@ public class ReservaDTO {
 
     public Double getPrecioTotal() { return precioTotal; }
     public void setPrecioTotal(Double precioTotal) { this.precioTotal = precioTotal; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 }

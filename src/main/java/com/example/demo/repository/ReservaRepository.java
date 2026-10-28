@@ -14,12 +14,13 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 
     @Query("SELECT new com.example.demo.dto.ReservaDTO(" +
            "r.id, " +
-           "COALESCE(r.nombreCliente, 'Cliente'), " +
+           "COALESCE(r.nombreCliente, 'Sin Nombre'), " +
            "COALESCE(r.correoCliente, 'sin_correo@mail.com'), " +
            "COALESCE(r.paqueteSeleccionado, 'Sin Paquete'), " +
            "r.fechaViaje, " +
            "r.cantidadPersonas, " +
-           "100.0) " +
+           "CAST(COALESCE(r.cantidadPersonas, 1) * 450.0 AS double), " +
+           "COALESCE(r.estado, 'PENDIENTE')) " +
            "FROM Reserva r")
     List<ReservaDTO> obtenerReservasDetalladas();
 }
