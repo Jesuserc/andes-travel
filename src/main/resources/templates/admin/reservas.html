@@ -56,11 +56,11 @@
       </div>
     </div>
 
-    <!-- 1. CONTENEDOR: SOLICITUDES PENDIENTES DE ATENCIÓN -->
+    <!-- TABLA DE RESERVAS GENERAL  -->
     <div class="card shadow-sm border-0 mb-5">
-      <div class="card-header bg-warning bg-opacity-25 py-3 d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0 fw-bold text-dark">
-          <i class="bi bi-clock-history me-2 text-warning"></i> Solicitudes Pendientes de Atención
+      <div class="card-header bg-primary bg-opacity-10 py-3">
+        <h5 class="card-title mb-0 fw-bold text-primary">
+          <i class="bi bi-journal-check me-2"></i> Reporte Compuesto de Reservas (DTO)
         </h5>
       </div>
       <div class="card-body p-0">
@@ -69,17 +69,39 @@
             <thead class="table-light">
               <tr>
                 <th>ID</th>
-                <th>Fecha Viaje</th>
                 <th>Cliente</th>
-                <th>Contacto</th>
-                <th>Paquete</th>
+                <th>Correo Electrónico</th>
+                <th>Paquete Reservado</th>
+                <th>Fecha Viaje</th>
                 <th class="text-center">Personas</th>
-                <th class="text-end">Monto (S/)</th>
-                <th>Estado</th>
-                <th class="text-end me-2">Acción</th>
+                <th class="text-end">Monto Total (S/)</th>
               </tr>
             </thead>
             <tbody>
-              <tr th:each="r : ${reservas}" th:if="${r.estado == null or r.estado == 'PENDIENTE'}">
-                <td th:text="${r.id}" class="fw-bold">1</td>
-                <td th:text="${r.fechaViaje
+              <tr th:each="r : ${reservasDTO}" th:if="${reservasDTO != null and !#lists.isEmpty(reservasDTO)}">
+                <td th:text="${r.idReserva}" class="fw-bold">1</td>
+                <td th:text="${r.nombreCliente}">Cliente</td>
+                <td th:text="${r.emailCliente}">correo@ejemplo.com</td>
+                <td><span class="badge bg-info text-dark" th:text="${r.nombrePaquete}">Paquete</span></td>
+                <td th:text="${r.fechaViaje}">2026-11-01</td>
+                <td th:text="${r.cantidadPersonas}" class="text-center">2</td>
+                <td class="text-end fw-bold text-success" 
+                    th:text="${r.precioTotal != null ? 'S/ ' + #numbers.formatDecimal(r.precioTotal, 1, 'COMMA', 2, 'POINT') : 'S/ 0.00'}">S/ 0.00</td>
+              </tr>
+              <tr th:if="${reservasDTO == null or #lists.isEmpty(reservasDTO)}">
+                <td colspan="7" class="text-center py-4 text-muted">
+                  <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                  No se encontraron reservas con los criterios seleccionados.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
