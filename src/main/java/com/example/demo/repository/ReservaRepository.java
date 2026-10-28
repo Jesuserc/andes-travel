@@ -13,7 +13,13 @@ import com.example.demo.model.Reserva;
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 
     @Query("SELECT new com.example.demo.dto.ReservaDTO(" +
-           "r.id, c.nombre, c.email, p.nombre, r.fechaViaje, r.cantidadPersonas, (p.precio * r.cantidadPersonas)) " +
-           "FROM Reserva r JOIN r.cliente c JOIN r.paquete p")
+           "r.id, " +
+           "COALESCE(r.nombreCliente, 'Cliente'), " +
+           "COALESCE(r.correoCliente, 'sin_correo@mail.com'), " +
+           "COALESCE(r.paqueteSeleccionado, 'Sin Paquete'), " +
+           "r.fechaViaje, " +
+           "r.cantidadPersonas, " +
+           "100.0) " +
+           "FROM Reserva r")
     List<ReservaDTO> obtenerReservasDetalladas();
 }
