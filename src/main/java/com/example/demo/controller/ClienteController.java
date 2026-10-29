@@ -32,12 +32,10 @@ public class ClienteController {
     }
 
 @GetMapping("/")
-    public String inicio(Model model) { 
-        model.addAttribute("paquetes", paqueteService.listarTodos());
-        model.addAttribute("reserva", new Reserva());
-        return "cliente/index"; 
-    }
-
+public String inicio(Model model) { 
+    model.addAttribute("paquetes", paqueteService.listarTodos());
+    return "cliente/index"; 
+}
     @GetMapping("/destinos")
     public String destinos(@RequestParam(required = false) String destino, Model model) {
         List<Paquete> lista = (destino != null && !destino.isEmpty()) 

@@ -23,6 +23,7 @@
 </head>
 <body>
 
+  <!-- NAVBAR UNICO SUPERIOR -->
   <div th:replace="~{layout/base :: navbar}"></div>
 
   <div class="container py-4 py-md-5">
@@ -82,9 +83,6 @@
 
           <form th:action="@{/reservar}" th:object="${reserva}" method="post" class="row g-3">
             
-            <!-- Campo oculto para enviar el Total al backend -->
-            <input type="hidden" id="inputTotal" th:field="*{total}">
-
             <div class="col-12 col-md-6">
               <label class="form-label small text-secondary">Nombre Completo *</label>
               <div class="input-group">
@@ -156,7 +154,8 @@
     </div>
   </div>
 
-  <div th:replace="~{layout/base :: navbar}"></div>
+  <!-- FOOTER UNICO -->
+  <div th:replace="~{layout/base :: footer}"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -165,7 +164,6 @@
       const selectPaquete = document.getElementById('selectPaquete');
       const inputViajeros = document.getElementById('inputViajeros');
       const presupuestoTexto = document.getElementById('presupuestoTexto');
-      const inputTotal = document.getElementById('inputTotal');
 
       function calcularPresupuesto() {
         const optionSeleccionada = selectPaquete.options[selectPaquete.selectedIndex];
@@ -174,7 +172,6 @@
         const total = precioUnitario * cantidad;
 
         presupuestoTexto.textContent = 'S/ ' + total.toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        inputTotal.value = total.toFixed(2);
       }
 
       selectPaquete.addEventListener('change', calcularPresupuesto);
