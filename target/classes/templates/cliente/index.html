@@ -3,93 +3,108 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Andes Travel - Agencia de Viajes</title>
+  <title>Andes Travel | Agencia de Viajes</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <style>
     body { background-color: #0f1815; color: #f2f4f3; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    .hero-section {
-      background: linear-gradient(rgba(15, 24, 21, 0.75), rgba(15, 24, 21, 0.95)),
-                  url('https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-      padding: 100px 0;
+    
+    .hero-title { 
+      font-family: Georgia, serif; 
+      font-size: clamp(2.2rem, 4.5vw + 1rem, 3.5rem); 
+      font-weight: bold; 
+      line-height: 1.15; 
     }
+    .hero-title em { font-style: italic; color: #f3d19e; }
+    .text-tagline { color: #e06d48; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1.5px; }
+    
+    .btn-custom-orange { background-color: #c95d3b; color: #fff; border: none; font-weight: 600; border-radius: 8px; padding: 12px 28px; transition: 0.3s; }
+    .btn-custom-orange:hover { background-color: #b04e2e; color: #fff; transform: translateY(-2px); }
+    .btn-custom-outline { border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 8px; padding: 12px 24px; font-weight: 500; transition: 0.3s; }
+    .btn-custom-outline:hover { background-color: rgba(255,255,255,0.1); color: #fff; }
+    
+    .stat-number { font-family: Georgia, serif; font-size: 2.2rem; font-weight: bold; color: #f2f4f3; line-height: 1; }
+    .stat-label { font-size: 0.8rem; color: #a0aab0; }
+
     .card-dark { background-color: #172420; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; transition: transform 0.3s ease; }
     .card-dark:hover { transform: translateY(-5px); }
     .text-cream { color: #e0d0c1; }
-    .btn-custom-orange { background-color: #c95d3b; color: #fff; border: none; font-weight: 600; border-radius: 6px; }
-    .btn-custom-orange:hover { background-color: #b04e2e; color: #fff; }
+
+    .hero-img-container { position: relative; }
+    .hero-main-img {
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .hero-badge-floating {
+      position: absolute;
+      bottom: -20px;
+      left: -20px;
+      background: rgba(23, 36, 32, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 15px 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR UNICO -->
-  <div th:replace="~{layout/base :: navbar}"></div>
+  <!-- Menu Navegación -->
+  <div th:replace="~{layout/base :: nav}"></div>
 
-  <!-- PORTADA / HERO -->
-  <header class="hero-section text-center text-white">
-    <div class="container py-5">
-      <span class="badge bg-warning text-dark text-uppercase px-3 py-2 fw-bold mb-3">Turismo Responsable en Perú</span>
-      <h1 class="display-4 fw-bold mb-3" style="font-family: Georgia, serif;">Descubre los Tesoros de los Andes</h1>
-      <p class="lead mx-auto text-light mb-4" style="max-width: 700px;">
-        Viaja con comodidad, guías certificados e itinerarios 100% personalizados por todo el Perú.
-      </p>
-      <div class="d-flex justify-content-center gap-3">
-        <a th:href="@{/destinos}" class="btn btn-custom-orange btn-lg px-4">Ver Destinos</a>
-        <a th:href="@{/contacto}" class="btn btn-outline-light btn-lg px-4">Cotizar Viaje</a>
-      </div>
-    </div>
-  </header>
+  <!-- Hero Section -->
+  <section class="py-4 py-md-5 my-2">
+    <div class="container py-2 py-md-4">
+      <div class="row align-items-center g-4 g-lg-5">
+        <div class="col-12 col-lg-6">
+          <p class="text-tagline mb-2"><i class="bi bi-geo-alt-fill me-1"></i> Agencia de viajes peruana</p>
+          <h1 class="hero-title mb-3 mb-md-4">El Perú se recorre <em>una vez</em>, se recuerda toda la vida.</h1>
+          <p class="lead mb-4 fs-6" style="max-width: 580px; color: #aeb8b3;">
+            Diseñamos rutas por Cusco, Arequipa, Paracas y la Amazonía con guías locales, transporte privado y alojamiento seleccionado a mano. Tú eliges el destino, nosotros armamos el resto.
+          </p>
+          <div class="d-flex flex-column flex-sm-row gap-3 mb-4 mb-md-5">
+            <a th:href="@{/destinos}" class="btn btn-custom-orange text-center shadow-sm">
+              <i class="bi bi-compass me-1"></i> Ver destinos
+            </a>
+            <a th:href="@{/contacto}" class="btn btn-custom-outline d-flex align-items-center justify-content-center gap-2">
+              <i class="bi bi-send"></i> Cotizar viaje
+            </a>
+          </div>
 
-  <!-- SECCIÓN DE BENEFICIOS -->
-  <section class="py-5 bg-dark bg-opacity-50">
-    <div class="container py-3">
-      <div class="row g-4 text-center">
-        <div class="col-12 col-md-4">
-          <div class="p-3">
-            <i class="bi bi-shield-check text-warning fs-1 mb-2"></i>
-            <h5 class="fw-bold text-white">Viajes Seguros</h5>
-            <p class="small text-secondary">Garantía de asistencia personalizada y transporte turístico autorizado.</p>
+          <div class="row g-3 g-sm-4 pt-3 border-top border-secondary border-opacity-25">
+            <div class="col-4 col-sm-auto me-sm-4">
+              <div class="stat-number">12</div>
+              <div class="stat-label">años de experiencia</div>
+            </div>
+            <div class="col-4 col-sm-auto me-sm-4">
+              <div class="stat-number">38</div>
+              <div class="stat-label">rutas activas</div>
+            </div>
+            <div class="col-4 col-sm-auto">
+              <div class="stat-number text-warning">4.9 <i class="bi bi-star-fill fs-6"></i></div>
+              <div class="stat-label">calificación promedio</div>
+            </div>
           </div>
         </div>
-        <div class="col-12 col-md-4">
-          <div class="p-3">
-            <i class="bi bi-award text-warning fs-1 mb-2"></i>
-            <h5 class="fw-bold text-white">Guías Locales</h5>
-            <p class="small text-secondary">Expertos autóctonos que te transmitirán la historia viva de cada región.</p>
-          </div>
-        </div>
-        <div class="col-12 col-md-4">
-          <div class="p-3">
-            <i class="bi bi-wallet2 text-warning fs-1 mb-2"></i>
-            <h5 class="fw-bold text-white">Precios Transparentes</h5>
-            <p class="small text-secondary">Sin costos ocultos ni comisiones extra. Todo detallado desde tu reserva.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- DESTINOS DESTACADOS DINÁMICOS -->
-  <section class="container py-5">
-    <div class="d-flex justify-content-between align-items-end mb-4">
-      <div>
-        <span class="text-warning text-uppercase fw-semibold small">Lo más reservado</span>
-        <h2 class="fw-bold text-white mb-0" style="font-family: Georgia, serif;">Destinos Populares</h2>
-      </div>
-      <a th:href="@{/destinos}" class="btn btn-outline-warning btn-sm">Explorar Todos &rarr;</a>
-    </div>
-
-    <div class="row g-4">
-      <div class="col-12 col-md-6 col-lg-4" th:each="p, iter : ${paquetes}" th:if="${iter.index < 3}">
-        <div class="card card-dark h-100 overflow-hidden">
-          <img th:src="${p.imagenUrl}" class="card-img-top" style="height: 220px; object-fit: cover;" th:alt="${p.nombre}">
-          <div class="card-body d-flex flex-column p-4">
-            <span class="badge bg-secondary mb-2 w-auto align-self-start" th:text="${p.duracion}">3 Días</span>
-            <h4 class="h5 fw-bold text-white mb-2" th:text="${p.nombre}">Paquete</h4>
-            <p class="small text-secondary flex-grow-1" th:text="${p.descripcion}">Descripción...</p>
-            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25 mt-3">
-              <span class="fw-bold text-cream fs-5" th:text="'S/ ' + ${#numbers.formatDecimal(p.precio, 1, 'COMMA', 2, 'POINT')}">S/ 0.00</span>
-              <a th:href="@{/contacto}" class="btn btn-custom-orange btn-sm px-3">Reservar</a>
+        <div class="col-12 col-lg-6">
+          <div class="hero-img-container my-3 my-lg-0">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/80_-_Machu_Picchu_-_Juin_2009_-_edit.jpg?width=1000" 
+                 alt="Machu Picchu Cusco Peru" 
+                 class="img-fluid w-100 hero-main-img" 
+                 style="height: 440px;">
+            
+            <div class="hero-badge-floating d-none d-sm-flex align-items-center gap-3">
+              <div class="bg-warning bg-opacity-25 text-warning rounded-circle p-3 d-flex align-items-center justify-content-center">
+                <i class="bi bi-award-fill fs-3"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold mb-0 text-white">Destino Top 2026</h6>
+                <small class="text-secondary">Cusco & Machu Picchu Imperial</small>
+              </div>
             </div>
           </div>
         </div>
@@ -97,7 +112,80 @@
     </div>
   </section>
 
-  <!-- FOOTER UNICO -->
+  <!-- Beneficios -->
+  <section class="py-4 py-md-5" style="background-color: #131e1a;">
+    <div class="container py-2 py-md-4">
+      <div class="text-center mb-4 mb-md-5">
+        <p class="text-tagline mb-2">Servicio Premium</p>
+        <h2 class="fw-bold fs-2" style="font-family: Georgia, serif;">¿Por qué viajar con Andes Travel?</h2>
+      </div>
+      <div class="row g-3 g-md-4">
+        <div class="col-12 col-md-4">
+          <div class="p-4 rounded-3 h-100 card-dark">
+            <i class="bi bi-compass fs-1 text-cream mb-3 d-inline-block"></i>
+            <h3 class="h5 fw-bold text-white mb-2">Guías Locales Expertos</h3>
+            <p class="small text-secondary mb-0">Nuestros guías son nativos de cada región, asegurando explicaciones históricas auténticas y vivenciales.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="p-4 rounded-3 h-100 card-dark">
+            <i class="bi bi-shield-check fs-1 text-cream mb-3 d-inline-block"></i>
+            <h3 class="h5 fw-bold text-white mb-2">Viajes 100% Seguros</h3>
+            <p class="small text-secondary mb-0">Contamos con transporte privado moderno, seguros de viaje integrados y soporte 24/7 en todas tus rutas.</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4">
+          <div class="p-4 rounded-3 h-100 card-dark">
+            <i class="bi bi-sliders fs-1 text-cream mb-3 d-inline-block"></i>
+            <h3 class="h5 fw-bold text-white mb-2">Itinerarios a Medida</h3>
+            <p class="small text-secondary mb-0">Personalizamos cada detalle del paquete según tu ritmo, presupuesto y preferencias de aventura o relax.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Destinos Populares (Dinamizado con Thymeleaf) -->
+  <section class="py-4 py-md-5">
+    <div class="container py-2 py-md-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+        <div>
+          <p class="text-tagline mb-1">Explora lo mejor</p>
+          <h2 class="fw-bold fs-2" style="font-family: Georgia, serif;">Destinos más populares</h2>
+        </div>
+        <a th:href="@{/destinos}" class="btn btn-outline-light btn-sm px-3 align-self-start align-self-md-auto">Ver todos los paquetes →</a>
+      </div>
+
+      <div class="row g-3 g-md-4">
+        <!-- Bucle Thymeleaf para recorrer la lista de paquetes de PostgreSQL -->
+        <div class="col-12 col-sm-6 col-lg-4" th:each="p : ${paquetes}">
+          <div class="card card-dark overflow-hidden h-100">
+            <img th:src="${p.imagenUrl}" class="card-img-top" style="height: 220px; object-fit: cover;" th:alt="${p.nombre}">
+            <div class="card-body p-3 p-sm-4 d-flex flex-column">
+              <span class="badge bg-secondary mb-2 w-auto me-auto align-self-start" th:text="${p.duracion}">Duración</span>
+              <h3 class="h5 fw-bold text-white" th:text="${p.nombre}">Nombre del Paquete</h3>
+              <p class="small text-secondary flex-grow-1" th:text="${p.descripcion}">Descripción del paquete...</p>
+              <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary border-opacity-25">
+                <span class="fw-bold text-cream fs-5" th:text="'S/ ' + ${#numbers.formatDecimal(p.precio, 1, 'POINT', 2, 'COMMA')}">S/ 0.00</span>
+                <a th:href="@{/contacto}" class="btn btn-custom-orange btn-sm px-3">Reservar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Banner de Cotización final -->
+  <section class="py-4 py-md-5 text-center">
+    <div class="container py-2 py-md-4">
+      <h2 class="fw-bold fs-2 mb-3" style="font-family: Georgia, serif;">¿Listo para tu próxima aventura?</h2>
+      <p class="text-secondary mb-4 mx-auto" style="max-width: 500px;">Contáctanos hoy mismo y te armamos un presupuesto personalizado sin ningún compromiso.</p>
+      <a th:href="@{/contacto}" class="btn btn-custom-orange w-100 w-sm-auto px-5 py-3 fw-bold fs-6">Cotizar mi viaje ahora</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <div th:replace="~{layout/base :: footer}"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
